@@ -2,6 +2,6 @@
 Aplikasi berbasis chatbot membantu mencapai gaya hidup sehat.
 
 SenproConqueror
-Anggota 1: 
+Anggota 1: Bagus Rakadyanto Oktavianto Putra - 21/474401/TK/52343
 Anggota 2: 
 Anggota 3: 
