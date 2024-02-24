@@ -29,7 +29,7 @@ Aplikasi untuk membantu deteksi dini penyakit cardiovascular dan mendukung pola 
 - Pembaruan keadaan kesehatan -> Pengguna juga dapat melakukan pembaruan keadaan kesehatan sesuai dengan keadaan kesehatan terbaru dan mendapatkan prediksi resiko penyakit cardiovascular sesuai dengan keadaan terbarunya
 
 ### Analisis Kompetitor
-1. **Kompetitor pertama**
+**Kompetitor pertama**
 <style>
     table,tr,th,td {
         border:1px solid black;
@@ -93,7 +93,7 @@ Aplikasi untuk membantu deteksi dini penyakit cardiovascular dan mendukung pola 
     </tbody>
 </table>
 
-2. **Kompetitor kedua**
+**Kompetitor kedua**
 <style>
     table,tr,th,td {
         border:1px solid black;
@@ -153,7 +153,7 @@ Aplikasi untuk membantu deteksi dini penyakit cardiovascular dan mendukung pola 
     </tbody>
 </table>
 
-3. **Kompetitor ketiga**
+**Kompetitor ketiga**
 <style>
     table,tr,th,td {
         border:1px solid black;
