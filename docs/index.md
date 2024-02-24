@@ -230,6 +230,7 @@ Aplikasi untuk membantu deteksi dini penyakit cardiovascular dan mendukung pola 
 <div style="text-align: justify; padding-bottom: 20px;"> Keempat jenis pengguna tersebut memiliki satu kebutuhan yang sama, yaitu kebutuhan untuk menjaga kondisi fisik agar tetap sehat.</div>
 
 **Use case diagram**
+
 ![use case](use-case/usecase.png)
 
 **Functional Requirements**
@@ -243,13 +244,16 @@ Aplikasi untuk membantu deteksi dini penyakit cardiovascular dan mendukung pola 
 - Mengubah status kesehatan -> Jika ada perubahan dalam kondisi kesehatan, pengguna dapat mengubah status kesehatan yang telah diisi saat survey
 
 **Entity Relationship Diagram**
+
 ![erd](erd/erd.png)
 
 **Low-Fi Wireframe**
+
 ![lofi](lofi-prototype/Frame1.png)
 ![lofi](lofi-prototype/Frame2.png)
 ![lofi](lofi-prototype/Frame3.png)
 ![lofi](lofi-prototype/Frame4.png)
 
 **Gantt-Chart pengerjaan proyek dalam kurun waktu 1 semester**
+
 ![gantt-chart](gantt-chart/gantt-chart.png)
