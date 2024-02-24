@@ -212,3 +212,44 @@ Aplikasi untuk membantu deteksi dini penyakit cardiovascular dan mendukung pola 
         </tr>
     </tbody>
 </table>
+
+### Metodologi SDLC
+<div style="text-align: justify"> Kami menggunakan metodologi SDLC sederhana yaitu Kanban. Alasan kami menggunakan metode Kanban ini karena sesuai dengan profil developer yang mengerjakan tugas ini. Kanban merupakan metodologi SDLC yang cenderung lebih santai daripada Scrum tetapi progres dari pengerjaan tetap dapat di-track melalui metode kanban yang ada. Kami juga akan memanfaatkan projects management yang ada di github dan pada github tersebut juga menggunakan metode kanban untuk metodologi SDLC yang ada. </div>
+
+### Perancangan Tahap 1-3 SDLC
+**Tujuan dari Produk**
+<div style="text-align: justify; padding-bottom: 20px;">  Membantu user untuk menjaga pola hidup sehat dan mencegah penyakit, khususnya penyakit cardiovascular </div>
+
+**Pengguna potensial dari Produk**
+<div style="text-align: justify; padding-bottom: 10px;"> Aplikasi HealAssist ditujukan kepada empat jenis pengguna:</div>
+
+- Orang yang ingin berusaha selalu hidup sehat dan memiliki awareness terhadap penyakit kardiovaskular
+- Seorang individu dengan risiko Kardiovaskular tinggi
+- Seorang pasien yang sedang dalam proses pemulihan
+- Kelompok usia lanjut
+<div style="text-align: justify; padding-bottom: 20px;"> Keempat jenis pengguna tersebut memiliki satu kebutuhan yang sama, yaitu kebutuhan untuk menjaga kondisi fisik agar tetap sehat.</div>
+
+**Use case diagram**
+![use case](use-case/usecase.png)
+
+**Functional Requirements**
+- Membuat akun (Register) -> Calon pengguna dapat membuat akun pada aplikasi untuk dapat mengakses fitur-fitur yang ada
+- Login -> Pengguna dapat masuk ke aplikasi menggunakan akun yang telah dibuat
+- Mengisi survey terkait kesehatan -> Pengguna harus mengisi survey terkait kesehatan mereka. Hasil survey akan digunakan untuk menentukan rekomendasi hidup sehat
+- Memilih makanan dan olahraga yang disukai -> Pengguna dapat memilih makanan dan olahraga yang akan dimasukkan pada jadwal rekomendasi hidup sehat
+- Memilih waktu rekomendasi berolahraga -> Pengguna dapat memilih waktu olahraga yang akan dimasukkan dalam jadwal rekomendasi hidup sehat
+- Melihat hasil prediksi kesehatan -> Berdasarkan survey kesehatan yang telah diisi, pengguna dapat melihat prediksi kesehatan mereka
+- Melihat jadwal rekomendasi hidup sehat -> Pengguna dapat melihat jadwal makanan yang perlu dikonsumsi dan olahraga yang perlu dilakukan untuk menjaga hidup sehat
+- Mengubah status kesehatan -> Jika ada perubahan dalam kondisi kesehatan, pengguna dapat mengubah status kesehatan yang telah diisi saat survey
+
+**Entity Relationship Diagram**
+![erd](erd/erd.png)
+
+**Low-Fi Wireframe**
+![lofi](lofi-prototype/Frame1.png)
+![lofi](lofi-prototype/Frame2.png)
+![lofi](lofi-prototype/Frame3.png)
+![lofi](lofi-prototype/Frame4.png)
+
+**Gantt-Chart pengerjaan proyek dalam kurun waktu 1 semester**
+![gantt-chart](gantt-chart/gantt-chart.png)
