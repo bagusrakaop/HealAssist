@@ -1,6 +1,8 @@
 const { User } = require("../models");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-exports.create = (req, res) => {
+exports.register = (req, res) => {
     const user = {
         username: req.body.username,
         name: req.body.name,
@@ -8,16 +10,86 @@ exports.create = (req, res) => {
         email: req.body.email,
     };
 
-    User.create(user)
-        .then((data) => {
-            res.send(data);
+    if (!user.email || !user.username || !user.password || !user.name) {
+        return res.status(400).send({ message: "Content cannot be empty" });
+    }
+
+    User.findOne({ where: { email: user.email } })
+        .then((existingUser) => {
+            if (existingUser) {
+                return res
+                    .status(400)
+                    .send({ message: "Email is already taken" });
+            } else {
+                const hashedPassword = bcrypt.hashSync(user.password, 10);
+                user.password = hashedPassword;
+
+                User.create(user)
+                    .then((data) => {
+                        res.send(data);
+                    })
+                    .catch((err) => {
+                        res.status(500).send({
+                            message:
+                                err.message ||
+                                "Some error occurred while creating User.",
+                        });
+                    });
+            }
         })
         .catch((err) => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating User.",
+                    err.message ||
+                    "Some error occurred while checking user data.",
             });
         });
+};
+
+exports.login = (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        if (!email || !password) {
+            return res.status(400).send({ message: "Content cannot be empty" });
+        }
+
+        User.findOne({ where: { email: email } }).then((user) => {
+            if (!user) {
+                return res.status(404).send({ message: "User not found" });
+            }
+
+            const isPasswordCorrect = bcrypt.compareSync(
+                password,
+                user.password
+            );
+
+            if (!isPasswordCorrect)
+                return res.status(400).send({ message: "Wrong password" });
+
+            const token = jwt.sign(
+                { id: user.id, username: user.username, email: user.email },
+                process.env.TOKEN_SECRET,
+                { expiresIn: "12h" }
+            );
+
+            const data = {
+                id: user.id,
+                username: user.username,
+                token: token,
+            };
+
+            return res.status(200).json({
+                message: "You are authenticated",
+                data: data,
+            });
+        });
+    } catch (err) {
+        return res.status(500).send({
+            message: err.message || "Some error occured while authenticating",
+        });
+    }
 };
 
 exports.findAll = (req, res) => {
