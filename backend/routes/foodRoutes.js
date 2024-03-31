@@ -7,5 +7,8 @@ router.get("/", foods.findAll);
 router.get("/:id", foods.findOne);
 router.put("/:id", foods.update);
 router.delete("/:id", foods.delete);
+router.post("/user", foods.addUserFood);
+router.get("/user/:userId", foods.getUserFood);
+router.delete("/:foodId/user/:userId", foods.deleteUserFood);
 
 module.exports = router;

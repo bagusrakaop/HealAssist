@@ -100,7 +100,7 @@ exports.findByUserId = (req, res) => {
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `Health for User ${id} does not exist`,
+                    message: `Health for User ${userId} does not exist`,
                 });
             }
         })
@@ -108,7 +108,7 @@ exports.findByUserId = (req, res) => {
             res.status(500).send({
                 message:
                     err.message ||
-                    `Error while retrieving Health for User with id = ${id}`,
+                    `Error while retrieving Health for User with id = ${userId}`,
             });
         });
 };

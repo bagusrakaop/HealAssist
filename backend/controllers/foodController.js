@@ -1,4 +1,4 @@
-const { Food } = require("../models");
+const { Food, User, Schedule } = require("../models");
 
 exports.create = (req, res) => {
     const food = {
@@ -91,6 +91,104 @@ exports.delete = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message: err.message || `Error deleting Food ${id}`,
+            });
+        });
+};
+
+exports.addUserFood = (req, res) => {
+    const { userId, foodId } = req.body;
+
+    User.findByPk(userId)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send({ message: "User not found" });
+            }
+
+            const defaultDate = new Date(0);
+            const defaultTime = "00:00:00";
+            return Schedule.create({
+                userId: userId,
+                date: defaultDate,
+                time: defaultTime,
+            });
+        })
+        .then((schedule) => {
+            return schedule.addFood(foodId).then(() => {
+                res.status(201).send({
+                    message: "Food added for user successfully.",
+                });
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Internal server error",
+            });
+        });
+};
+
+exports.getUserFood = (req, res) => {
+    const userId = req.params.userId;
+
+    User.findByPk(userId)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send({ message: "User not found" });
+            }
+
+            return user.getSchedules().then((schedules) => {
+                let foodList = [];
+
+                const promises = schedules.map((schedule) => {
+                    return schedule.getFood().then((foods) => {
+                        foods.forEach((food) => {
+                            if (
+                                !foodList.some(
+                                    (existingFood) =>
+                                        existingFood.id === food.id
+                                )
+                            ) {
+                                foodList.push(food);
+                            }
+                        });
+                    });
+                });
+
+                return Promise.all(promises).then(() => {
+                    res.status(200).send({ userId, foodList });
+                });
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Internal server error",
+            });
+        });
+};
+
+exports.deleteUserFood = (req, res) => {
+    const { foodId, userId } = req.params;
+
+    Schedule.findAll({
+        where: { userId: userId },
+    })
+        .then((schedules) => {
+            if (schedules.length === 0) {
+                return res
+                    .status(404)
+                    .send({ message: "Schedules not found for User" });
+            }
+
+            const promises = schedules.map((schedule) => {
+                return schedule.removeFood(foodId);
+            });
+
+            return Promise.all(promises).then(() => {
+                res.status(200).send({ message: "Food removed successfully." });
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Internal server error",
             });
         });
 };
