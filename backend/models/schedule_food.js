@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         {
             sequelize,
             modelName: "Schedule_Food",
+            timestamps: false,
         }
     );
     return Schedule_Food;

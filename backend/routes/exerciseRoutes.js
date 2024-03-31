@@ -7,5 +7,8 @@ router.get("/", exercises.findAll);
 router.get("/:id", exercises.findOne);
 router.put("/:id", exercises.update);
 router.delete("/:id", exercises.delete);
+router.post("/user", exercises.addUserExercise);
+router.get("/user/:userId", exercises.getUserExercise);
+router.delete("/:exerciseId/user/:userId", exercises.deleteUserExercise);
 
 module.exports = router;
