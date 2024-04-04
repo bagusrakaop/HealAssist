@@ -95,7 +95,7 @@ exports.findByUserId = (req, res) => {
                 through: { attributes: [] },
             },
             {
-                model: Exercise, // Sertakan model Exercise
+                model: Exercise,
                 through: { attributes: [] },
             },
         ],

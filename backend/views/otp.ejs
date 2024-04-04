@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OTP Verification</title>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
+        />
+        <style>
+            body {
+                font-family: "Nunito", sans-serif;
+                background-color: #eaf0ff;
+                margin: 0;
+                padding: 0;
+            }
+
+            .email-container {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #eaf0ff;
+                padding: 20px;
+                border-radius: 8px;
+            }
+
+            h1 {
+                color: #415da1;
+                text-align: left;
+            }
+
+            h2 {
+                color: #101c37;
+                text-align: center;
+            }
+
+            p {
+                color: #101c37;
+                font-size: 16px;
+                line-height: 1.6;
+                margin-bottom: 20px;
+            }
+
+            .otp-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .otp-box {
+                display: inline-block; /* Mengubah display menjadi inline-block */
+                padding: 0px 20px; /* Atur jarak antar karakter */
+                background-color: #869dd4;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                /* font-size: 16px; */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <h1>Hello,</h1>
+            <p>
+                Thank you for choosing HealAssist. Use the following OTP to
+                complete your Sign Up procedures.
+                <strong>OTP is valid for 5 minutes</strong>.
+            </p>
+            <div class="otp-container">
+                <div class="otp-box">
+                    <h2><%= otp %></h2>
+                </div>
+            </div>
+            <p>Regards,<br />HealAssist</p>
+        </div>
+    </body>
+</html>

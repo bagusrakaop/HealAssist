@@ -1,6 +1,9 @@
 const express = require("express");
 const healths = require("../controllers/healthController.js");
+const authMiddleware = require("../middleware/authMiddleware.js");
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.post("/", healths.create);
 router.get("/", healths.findAll);

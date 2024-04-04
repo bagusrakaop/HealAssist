@@ -1,6 +1,9 @@
 const express = require("express");
 const exercises = require("../controllers/exerciseController.js");
+const authMiddleware = require("../middleware/authMiddleware.js");
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.post("/", exercises.create);
 router.get("/", exercises.findAll);
