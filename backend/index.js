@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 const userRoutes = require("./routes/userRoutes");
@@ -9,6 +10,8 @@ const authRoutes = require("./routes/authRoutes");
 const scheduleRoutes = require("./routes/scheduleRoutes");
 
 app.use(express.json());
+app.use(cors());
+
 app.use("/api/users", userRoutes);
 app.use("/api/healths", healthRoutes);
 app.use("/api/exercises", exerciseRoutes);

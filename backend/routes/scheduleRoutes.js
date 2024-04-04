@@ -1,6 +1,9 @@
 const express = require("express");
 const schedules = require("../controllers/scheduleController.js");
+const authMiddleware = require("../middleware/authMiddleware.js");
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.post("/", schedules.create);
 router.get("/", schedules.findAll);

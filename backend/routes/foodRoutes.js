@@ -1,6 +1,9 @@
 const express = require("express");
 const foods = require("../controllers/foodController.js");
+const authMiddleware = require("../middleware/authMiddleware.js");
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.post("/", foods.create);
 router.get("/", foods.findAll);
