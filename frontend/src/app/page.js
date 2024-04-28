@@ -17,7 +17,7 @@ export default function Home() {
         <Image className="items-center right-0" src="/robot-1.svg" alt="Diagbostic Robot" width={480} height={480} priority />
       </div>
       {/* Cardiovascular Disease Case Information */}
-      <div className="flex flex-col w-2/3 mx-auto h-[640px] bg-white text-primary justify-center items-center">
+      <div className="flex flex-col w-2/3 mx-auto mt-24 mb-12 bg-white text-primary justify-center items-center">
         <div className="text-3xl font-extrabold mb-10">Did you Know??</div>
         <div className="flex py-5">
           <div className="flex mx-10">
@@ -56,6 +56,70 @@ export default function Home() {
           </p>
           <br />
           <p className="text-xs">Quoted from sehatnegeriku.kemkes.go.id</p>
+        </div>
+      </div>
+      {/* Features Preview */}
+      <div className="flex flex-col w-2/3 mx-auto h-[640px] bg-white text-primary items-center">
+        <div className="font-bold mb-12">OUR FEATURES</div>
+        {/* Personalized Account */}
+        <div className="w-full">
+          <div className="font-extrabold text-xl text-center mb-8">Different Personal, Different Health Profile, Different Recommendations</div>
+          <div className="flex justify-between">
+            <div>
+              <Image src="/pict-persona-1.svg" alt="Persona 1 (Sarah)" width={164} height={164} priority />
+              <div className="text-black">
+                <div className="font-extrabold">Sarah Johnson</div>
+                <div className="text-sm">
+                  Athlete
+                  <br />
+                  Female, 26 y/o
+                </div>
+              </div>
+            </div>
+            <div>
+              <Image src="/pict-persona-2.svg" alt="Persona 2 (Michael)" width={164} height={164} priority />
+              <div className="text-black">
+                <div className="font-extrabold">Michael Davis</div>
+                <div className="text-sm">
+                  Office Worker
+                  <br />
+                  Male, 30 y/o
+                </div>
+              </div>
+            </div>
+            <div>
+              <Image src="/pict-persona-3.svg" alt="Persona 3 (Emily)" width={164} height={164} priority />
+              <div className="text-black">
+                <div className="font-extrabold">Emily Chen</div>
+                <div className="text-sm">
+                  College Student
+                  <br />
+                  Female, 21 y/o
+                </div>
+              </div>
+            </div>
+            <div>
+              <Image src="/pict-persona-4.svg" alt="Persona 4 (Sam)" width={164} height={164} priority />
+              <div className="text-black">
+                <div className="font-extrabold">Sam Kolder</div>
+                <div className="text-sm">
+                  Outdoor Worker
+                  <br />
+                  Male, 43 y/o
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center items-center my-10 w-4/5 mx-auto">
+            <Image src="/illustration-personalized-account.svg" alt="Personalized Account Illustration" width={192} height={192} priority />
+            <div className="mx-10">
+              <div className="text-xl">
+                <b>Whoever you are,</b> we are ready with
+              </div>
+              <div className="text-3xl font-extrabold">Personalized Account</div>
+              <div className="text-xl">Create an account according to your health profile and condition to get food and exercise recommendations that are suitable for you</div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
