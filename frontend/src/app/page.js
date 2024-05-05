@@ -59,7 +59,7 @@ export default function Home() {
         </div>
       </div>
       {/* Features Preview */}
-      <div className="flex flex-col w-2/3 mx-auto h-[640px] bg-white text-primary items-center">
+      <div className="flex flex-col w-2/3 mx-auto bg-white text-primary items-center">
         <div className="font-bold mb-12">OUR FEATURES</div>
         {/* Personalized Account */}
         <div className="w-full">
@@ -120,6 +120,122 @@ export default function Home() {
               <div className="text-xl">Create an account according to your health profile and condition to get food and exercise recommendations that are suitable for you</div>
             </div>
           </div>
+        </div>
+        {/* Routine Recommendatuin */}
+        <div className="w-full mb-10">
+          <div className="font-extrabold text-xl text-center mb-8">Get the Routine Recommendations</div>
+          <div className="flex flex-row justify-center">
+            <div className="px-4 w-2/5">
+              <div className="h-32">
+                <div className="font-extrabold text-xl">Food Recommendations</div>
+                <div className="font-bold text-md mb-4">Get food recommendations that you like and match your health profile</div>
+              </div>
+              {/* salad */}
+              <div className="flex">
+                <div className="w-24 h-24 rounded-full overflow-hidden">
+                  <Image src="/food-salad.png" alt="Salad" width={164} height={164} priority />
+                </div>
+                <div className="mx-3 my-auto">
+                  <div className="text-xl font-extrabold">Salad</div>
+                  <div>
+                    Sunday Morning <br />1 Portion(s)
+                  </div>
+                </div>
+              </div>
+              {/* Chicken Soup */}
+              <div className="flex justify-end">
+                <div className="mx-3 my-auto">
+                  <div className="text-xl font-extrabold">Chicken Soup</div>
+                  <div>
+                    Monday Night <br />1 Portion(s)
+                  </div>
+                </div>
+                <div className="w-24 h-24 rounded-full overflow-hidden">
+                  <Image src="/food-chicken-soup.png" alt="Chicken Soup" width={164} height={164} priority />
+                </div>
+              </div>
+              {/* Beef */}
+              <div className="flex">
+                <div className="w-24 h-24 rounded-full overflow-hidden">
+                  <Image src="/food-beef.png" alt="Beef" width={164} height={164} priority />
+                </div>
+                <div className="mx-3 my-auto">
+                  <div className="text-xl font-extrabold">Beef</div>
+                  <div>
+                    Tuesday <br />2 Portion(s)
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="h-10px w-[3px] bg-darkgrey rounded-full mx-4"></div>
+            <div className="px-4 w-2/5">
+              <div className="h-32">
+                <div className="font-extrabold text-xl text-right">Exercise Recommendations</div>
+                <div className="font-bold text-md mb-4 text-right">Stay healthy and fit with exercise recommendations that you like and suit your profile</div>
+              </div>
+              {/* jogging */}
+              <div className="flex justify-end text-right">
+                <div className="mx-3 my-auto">
+                  <div className="text-xl font-extrabold">Jogging</div>
+                  <div>
+                    Every Morning <br />
+                    30 Minute(s)
+                  </div>
+                </div>
+                <div className="w-24 h-24 rounded-full overflow-hidden">
+                  <Image src="/exercise-jogging.png" alt="Jogging" width={164} height={164} priority />
+                </div>
+              </div>
+              {/* swimming */}
+              <div className="flex">
+                <div className="w-24 h-24 rounded-full overflow-hidden">
+                  <Image src="/exercise-swimming.png" alt="Swimming" width={164} height={164} priority />
+                </div>
+                <div className="mx-3 my-auto">
+                  <div className="text-xl font-extrabold">Swimming</div>
+                  <div>
+                    Every Sunday <br />
+                    120 Minute(s)
+                  </div>
+                </div>
+              </div>
+              {/* gym */}
+              <div className="flex justify-end text-right">
+                <div className="mx-3 my-auto">
+                  <div className="text-xl font-extrabold">Gym</div>
+                  <div>
+                    Tuesday, Friday <br />
+                    90 Minute(s)
+                  </div>
+                </div>
+                <div className="w-24 h-24 rounded-full overflow-hidden">
+                  <Image src="/exercise-gym.png" alt="Gym" width={164} height={164} priority />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Automatic Scheduling & Health Adjustment */}
+        <div className="flex w-3/4 relative my-10">
+          <div className="relative z-10">
+            <div className="font-extrabold text-4xl">Don't miss your routine!</div>
+            <div className="font-bold text-md w-1/2">Keep up your healthy habits with the automatic scheduling feature.</div>
+            <div className="text-green my-10">
+              <Image className="my-2" src="/illustration-update-health.svg" alt="Update" width={280} height={280} priority />
+              <div className="font-regular text-sm">Feel that your body getting better? Or do you feel unwell instead?</div>
+              <div className="font-bold text-lg w-2/3">The health update feature is here to adjust recommendations to your condition.</div>
+            </div>
+          </div>
+          {/* ilustrasi robot */}
+          <div className="absolute inset-0 z-0 flex justify-end">
+            <Image src="/illustration-robot-scheduling.svg" alt="Robot with Schedule Illustration" width={360} height={360} priority />
+          </div>
+        </div>
+        {/* Logo & Tagline */}
+        <div className="flex flex-col items-center my-10">
+          <div className="font-semibold text-xl text-center mb-10">Come prevent cardiovascular disease and start living a healthy life with us.</div>
+          <Image src="/navbar-logo.svg" alt="Logo" width={540} height={540} priority />
+          <button className="btn btn-md btn-primary my-10">Sign Up Now</button>
         </div>
       </div>
     </main>
