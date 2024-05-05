@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={nunito.className}>
-        <div className="w-full h-16 fixed top-0 flex items-center bg-neutral justify-between py-4 shadow-md">
+        <div className="w-full h-16 fixed top-0 flex items-center bg-neutral justify-between py-4 shadow-md z-50">
           <button onClick={() => handleButtonClick("logo")}>
             <Image className="pl-10" src="/navbar-logo.svg" alt="HealAssist Navbar Logo" width={180} height={37} priority />
           </button>
