@@ -1,0 +1,4 @@
+catboost
+flask
+pandas
+gunicorn
