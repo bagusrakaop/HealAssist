@@ -4,6 +4,8 @@ import Image from "next/image";
 import "./globals.css";
 import { useState } from "react";
 
+import SignInModal from "./components/signInModal";
+
 const nunito = Nunito({
   weight: ["300", "400", "600", "700", "800"],
   style: ["normal"],
@@ -12,6 +14,7 @@ const nunito = Nunito({
 
 export default function RootLayout({ children }) {
   const [activeButton, setActiveButton] = useState(null);
+
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -37,9 +40,9 @@ export default function RootLayout({ children }) {
               Profile
             </button>
           </div>
-          <button onClick={() => handleButtonClick("auth")} className="btn btn-sm btn-primary mr-10">
-            Sign In
-          </button>
+          <div>
+          <SignInModal/>
+          </div>
         </div>
         <div className="mt-16">{children}</div>
       </body>
