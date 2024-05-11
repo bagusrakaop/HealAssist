@@ -220,7 +220,7 @@ export default function Home() {
           <div className="relative z-10">
             <div className="font-extrabold text-4xl">Don't miss your routine!</div>
             <div className="font-bold text-md w-1/2">Keep up your healthy habits with the automatic scheduling feature.</div>
-            <div className="text-green my-10">
+            <div className="text-midgreen my-10">
               <Image className="my-2" src="/illustration-update-health.svg" alt="Update" width={280} height={280} priority />
               <div className="font-regular text-sm">Feel that your body getting better? Or do you feel unwell instead?</div>
               <div className="font-bold text-lg w-2/3">The health update feature is here to adjust recommendations to your condition.</div>
