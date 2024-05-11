@@ -4,7 +4,7 @@ import Image from "next/image";
 import "./globals.css";
 import { useState } from "react";
 
-import SignInModal from "./components/signInModal";
+import SignInModal from "@/components/landing/signInModal";
 
 const nunito = Nunito({
   weight: ["300", "400", "600", "700", "800"],
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
             </button>
           </div>
           <div>
-          <SignInModal/>
+            <SignInModal/>
           </div>
         </div>
         <div className="mt-16">{children}</div>
