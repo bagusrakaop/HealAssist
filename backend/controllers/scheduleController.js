@@ -1,10 +1,13 @@
-const { Schedule, Food, Exercise } = require("../models");
+const { Schedule, Food, Exercise, Schedule_Food, Schedule_Exercise } = require("../models");
+const db = require("../models/index.js");
+const sequelize = db.sequelize;
 
 exports.create = (req, res) => {
     const schedule = {
         userId: req.body.userId,
         date: req.body.date,
         time: req.body.time,
+        status: 0
     };
 
     Schedule.findOne({
@@ -98,6 +101,10 @@ exports.findByUserId = (req, res) => {
                 model: Exercise,
                 through: { attributes: [] },
             },
+        ],
+        order: [
+            ['date', 'ASC'], 
+            ['time', 'ASC'], 
         ],
     })
         .then((schedules) => {
@@ -317,6 +324,134 @@ exports.getScheduleExercise = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message: err.message || `Error finding schedule`,
+            });
+        });
+};
+
+exports.createWeeklySchedule = (req, res) => {
+    const curDate = new Date();
+
+    const times = ['08:00:00', '12:00:00', '18:00:00'];
+    let count = 0;
+    while (count < 7) {
+        let schedDate = new Date();
+        schedDate.setDate(curDate.getDate() + 1 + count);
+        for (const time of times) {
+            const schedule = {
+                userId: req.body.userId,
+                date: schedDate,
+                time: time,
+                status: 0
+            };
+
+            Schedule.findOne({
+                where: {
+                    userId: schedule.userId,
+                    date: schedule.date,
+                    time: schedule.time,
+                },
+            })
+                .then((existingSched) => {
+                    if (!existingSched) {
+                        Schedule.create(schedule)
+                    }
+                })
+                .catch((err) => {
+                    res.status(500).send({
+                        message:
+                            err.message ||
+                            "Some error occurred while checking Schedule data.",
+                    });
+                });
+        }
+        count++;
+    }
+    res.status(200).send({ message: "Schedule created successfully"});
+}
+
+exports.addWeeklyFood = (req, res) => {
+    userId = req.body.userId;
+    foodIds = req.body.foodIds
+
+    const getRandomFoodId = () => {
+        const randomIndex = Math.floor(Math.random() * foodIds.length);
+        return foodIds[randomIndex];
+    };
+
+    Schedule.findAll({
+        where: { userId: userId },
+    })
+        .then((schedules) => {
+            for (const schedule of schedules) {
+                const foodId = getRandomFoodId();
+                
+                Food.findByPk(foodId)
+                .then((food) => {
+                    schedule
+                        .addFood(food)
+                })
+            }
+        })
+        .then(() => {
+            res.status(200).send({ message: "Weekly food added successfully"});
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while adding weekly food.",
+            });
+        });
+}
+
+exports.addWeeklyExercise = (req, res) => {
+    const userId = req.body.userId;
+    const exIds = req.body.exIds;
+
+    const getRandomExId = () => {
+        const randomIndex = Math.floor(Math.random() * exIds.length);
+        return exIds[randomIndex];
+    };
+
+    Schedule.findAll({
+        where: { userId: userId },
+        attributes: [[sequelize.fn('DISTINCT', sequelize.col('date')), 'date']] // Memilih tanggal unik
+    })
+        .then((schedules) => {
+
+            for (const schedule of schedules) {
+                const date = schedule.date;
+                let time;
+
+                const randomTimeIndex = Math.floor(Math.random() * 3);
+                if (randomTimeIndex === 0) {
+                    time = '08:00:00';
+                } else if (randomTimeIndex === 1) {
+                    time = '12:00:00';
+                } else {
+                    time = '18:00:00';
+                }
+
+                Schedule.findOne({
+                    where: { userId: userId, date: date, time: time },
+                })
+                    .then((schedule) => {
+                        if (schedule) {
+                            const exId = getRandomExId();
+                            // Tambahkan pasangan scheduleId dan exerciseId ke tabel Exercise_Schedule
+                            Exercise.findByPk(exId)
+                            .then((exercise) => {
+                                schedule
+                                    .addExercise(exercise)
+                            })
+                        }
+                    })
+            }
+        })
+        .then(() => {
+            res.status(200).send({ message: "Weekly exercise added successfully"})
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while adding weekly exercise.",
             });
         });
 };
