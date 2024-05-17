@@ -14,4 +14,7 @@ router.post("/user", foods.addUserFood);
 router.get("/user/:userId", foods.getUserFood);
 router.delete("/:foodId/user/:userId", foods.deleteUserFood);
 
+// Untuk ngedit makanan user (sekaligus update schedule)
+router.put("/user/:userId", foods.editWeeklyFood);
+
 module.exports = router;

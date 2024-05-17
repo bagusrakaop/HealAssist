@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             name: DataTypes.STRING,
             calories: DataTypes.DOUBLE,
+            picture: DataTypes.STRING,
         },
         {
             sequelize,

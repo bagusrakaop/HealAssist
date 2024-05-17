@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
                 field: "cal_burned",
             },
             duration: DataTypes.INTEGER,
+            picture: DataTypes.STRING,
         },
         {
             sequelize,

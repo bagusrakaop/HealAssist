@@ -5,6 +5,7 @@ exports.create = (req, res) => {
         name: req.body.name,
         calBurned: req.body.calBurned,
         duration: req.body.duration,
+        picture: req.body.picture
     };
 
     Exercise.create(exercise)
@@ -196,3 +197,40 @@ exports.deleteUserExercise = (req, res) => {
             });
         });
 };
+
+exports.editWeeklyExercise = (req, res) => {
+    const userId = req.params.userId;
+    const exIds = req.body.exIds
+
+    Schedule.findAll({
+        where: { userId: userId },
+        include: [{
+            model: Exercise,
+            through: { attributes: [] }, // Exclude join table attributes
+            required: true 
+        }]
+    })
+    .then((schedules) => {
+        const promises = [];
+
+        const getRandomExId = () => {
+            const randomIndex = Math.floor(Math.random() * exIds.length);
+            return exIds[randomIndex];
+        };
+
+        for (const schedule of schedules) {
+            const exId = getRandomExId();
+            promises.push(schedule.setExercises([exId]));
+        }
+
+        return Promise.all(promises);
+    })
+        .then(() => {
+            res.status(200).send({ message: "Exercise changed successfully"});
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Internal server error",
+            });
+        });
+}

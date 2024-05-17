@@ -10,4 +10,7 @@ router.put("/:id", users.update);
 router.get("/:id", users.findOne);
 router.delete("/:id", users.delete);
 
+// Untuk tampilan user profile
+router.get("/profile/:id", users.findProfile);
+
 module.exports = router;

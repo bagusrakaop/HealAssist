@@ -14,4 +14,7 @@ router.post("/user", exercises.addUserExercise);
 router.get("/user/:userId", exercises.getUserExercise);
 router.delete("/:exerciseId/user/:userId", exercises.deleteUserExercise);
 
+// Untuk ngedit olahraga user (sekaligus update schedule)
+router.put("/user/:userId", exercises.editWeeklyExercise);
+
 module.exports = router;

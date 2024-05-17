@@ -4,6 +4,7 @@ exports.create = (req, res) => {
     const food = {
         name: req.body.name,
         calories: req.body.calories,
+        picture: req.body.picture
     };
 
     Food.create(food)
@@ -192,3 +193,40 @@ exports.deleteUserFood = (req, res) => {
             });
         });
 };
+
+exports.editWeeklyFood = (req, res) => {
+    const userId = req.params.userId;
+    const foodIds = req.body.foodIds
+
+    Schedule.findAll({
+        where: { userId: userId },
+        include: [{
+            model: Food,
+            through: { attributes: [] }, // Exclude join table attributes
+        }]
+    })
+    .then((schedules) => {
+        const promises = [];
+
+        const getRandomFoodId = () => {
+            const randomIndex = Math.floor(Math.random() * foodIds.length);
+            return foodIds[randomIndex];
+        };
+
+        // Update food associations for each schedule
+        for (const schedule of schedules) {
+            const foodId = getRandomFoodId();
+            promises.push(schedule.setFood([foodId])); // Set new food association
+        }
+
+        return Promise.all(promises);
+    })
+        .then(() => {
+            res.status(200).send({ message: "Foods changed successfully"});
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Internal server error",
+            });
+        });
+}

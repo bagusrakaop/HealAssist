@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Health } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -166,6 +166,32 @@ exports.findOne = (req, res) => {
             });
         });
 };
+
+exports.findProfile = (req, res) => {
+    const id = req.params.id;
+
+    User.findByPk(id, {
+        attributes: ['name', 'email'],
+        include: [{
+            model: Health,
+            attributes: ['sex', 'age']
+        }]
+    })
+    .then((data) => {
+        if (data) {
+            res.send(data);
+        } else {
+            res.status(404).send({
+                message: `User ${id} does not exist`,
+            });
+        }
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message: err.message || `Error while retrieving User with id = ${id}`,
+        });
+    });
+}
 
 exports.update = (req, res) => {
     const id = req.params.id;
