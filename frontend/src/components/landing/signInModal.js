@@ -1,15 +1,21 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useModal } from '@/contexts/modalContext';
 
-const SignInModal = ({ }) => {
+const SignInModal = ({ onClose }) => {
+  const { openSignUpModal } = useModal();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
     return (
       <>
-        <button className="btn btn-sm btn-primary mr-10" onClick={()=>document.getElementById('sign_in').showModal()}>Sign In</button>       
-        <dialog id="sign_in" className="modal">
+        <dialog open={isVisible} className="modal modal-enter modal-enter-active">
           <div className="modal-box max-w-fit p-0 rounded-md bg-neutral text-primary">
             <div className='flex justify-end m-1'>
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost">✕</button>
-            </form>
+            <button onClick={onClose} className="btn btn-sm btn-circle btn-ghost">✕</button>
             </div>
             <div className="grid grid-cols-2 gap-5 mx-10">
               <div>
@@ -35,12 +41,11 @@ const SignInModal = ({ }) => {
                       </div>
                     </div>
                   </form>
-                  <p className="text-xs text-center pt-6">
+                  <div className="text-xs text-center pt-6">
                     <span>Don’t have an account? </span>
-                    <span className="font-bold">Sign Up</span>
-                  </p>
+                    <button onClick={() => { onClose(); openSignUpModal(); }} className="font-bold">Sign Up</button>
+                  </div>
                 </div>
-
               </div>
             </div>
           </div>

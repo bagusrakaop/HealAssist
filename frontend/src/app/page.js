@@ -1,6 +1,11 @@
+"use client";
 import Image from "next/image";
 
+import { useModal } from "@/contexts/modalContext";
+
 export default function Home() {
+  const { openSignUpModal } = useModal();
+
   return (
     <main className="w-full bg-white min-h-screen">
       {/* top of landing page */}
@@ -235,7 +240,7 @@ export default function Home() {
         <div className="flex flex-col items-center my-10">
           <div className="font-semibold text-xl text-center mb-10">Come prevent cardiovascular disease and start living a healthy life with us.</div>
           <Image src="/navbar-logo.svg" alt="Logo" width={540} height={540} priority />
-          <button className="btn btn-md btn-primary my-10">Sign Up Now</button>
+          <button onClick={() => openSignUpModal()} className="btn btn-md btn-primary my-10">Sign Up Now</button>
         </div>
       </div>
     </main>
