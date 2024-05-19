@@ -31,3 +31,20 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .modal-enter {
+    @apply opacity-0 scale-95;
+  }
+  .modal-enter-active {
+    @apply opacity-100 scale-100;
+    transition: opacity 0.1s ease, transform 0.1s ease;
+  }
+  .modal-leave {
+    @apply opacity-100 scale-100;
+  }
+  .modal-leave-active {
+    @apply opacity-0 scale-95;
+    transition: opacity 0.1s ease, transform 0.1s ease;
+  }
+}
