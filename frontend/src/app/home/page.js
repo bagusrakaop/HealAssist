@@ -1,10 +1,13 @@
+"use client";
 import Pie from "@/components/home/CircularPercentage"
 import ActivityContainer from "@/components/home/UpcomingActivity"
 import Card from "@/components/CardContainer"
+import SurveyModal from "@/components/home/SurveyModal";
 
 export default function Homepage() {
   return (
     <main className="w-full bg-white min-h-screen">
+      <SurveyModal/>
       <div className="flex flex-col bg-neutral text-primary justify-center py-10">
         <div className="text-2xl text-center font-bold">Hello, User!</div>
         <div className="text-2xl text-center font-bold">here is your current condition</div>
@@ -17,7 +20,7 @@ export default function Homepage() {
         <div className="flex flex-row justify-center items-center gap-x-10">
           <button className="btn btn-sm btn-primary">Your Schedule</button>
           <button className="btn btn-sm btn-primary">Your Favorites</button>
-          <button className="btn btn-sm btn-primary">Update Condition</button>
+          <button className="btn btn-sm btn-primary" onClick={()=>document.getElementById('survey').showModal()}>Update Condition</button>
         </div>
         <div className="text-2xl text-center font-bold mt-16">Today's Upcoming Activity</div>
         <ActivityContainer/>
