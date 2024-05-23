@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
                     key: "id",
                 },
             },
+            status: {
+                type: DataTypes.INTEGER,
+            },
         },
         {
             sequelize,
