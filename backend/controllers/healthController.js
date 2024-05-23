@@ -25,9 +25,22 @@ exports.create = (req, res) => {
     Health.findOne({ where: { userId: health.userId } })
         .then((existingHealth) => {
             if (existingHealth) {
-                return res.status(400).send({
-                    message: "Health data for this user already exists.",
-                });
+                Health.update(req.body, { where: { id: existingHealth.id } })
+                    .then((num) => {
+                        if (num == 1) {
+                            res.send({ message: `Health ${id} is updated` });
+                        } else {
+                            res.status(400).send({
+                                message: `Cannot update Health ${id}`,
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        res.status(500).send({
+                            message:
+                                err.message || `Error updating Health ${id}`,
+                        });
+                    });
             } else {
                 Health.create(health)
                     .then((data) => {

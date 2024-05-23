@@ -18,7 +18,7 @@ exports.register = (req, res) => {
     hash = req.body.hash;
     otp = req.body.otp;
     passwordConfirmation = req.body.passwordConfirmation;
-    console.log(req.body);
+
     if (
         !user.email ||
         !user.username ||
@@ -56,7 +56,18 @@ exports.register = (req, res) => {
 
                     User.create(user)
                         .then((data) => {
-                            res.send(data);
+                            res.send({
+                                message: "User created successfully",
+                                data: {
+                                    id: data.id,
+                                    username: data.username,
+                                    name: data.name,
+                                    password: data.password,
+                                    email: data.email,
+                                    updatedAt: data.updatedAt,
+                                    createdAt: data.createdAt,
+                                },
+                            });
                         })
                         .catch((err) => {
                             res.status(500).send({
@@ -171,27 +182,31 @@ exports.findProfile = (req, res) => {
     const id = req.params.id;
 
     User.findByPk(id, {
-        attributes: ['name', 'email'],
-        include: [{
-            model: Health,
-            attributes: ['sex', 'age']
-        }]
+        attributes: ["name", "email"],
+        include: [
+            {
+                model: Health,
+                attributes: ["sex", "age"],
+            },
+        ],
     })
-    .then((data) => {
-        if (data) {
-            res.send(data);
-        } else {
-            res.status(404).send({
-                message: `User ${id} does not exist`,
+        .then((data) => {
+            if (data) {
+                res.send(data);
+            } else {
+                res.status(404).send({
+                    message: `User ${id} does not exist`,
+                });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message ||
+                    `Error while retrieving User with id = ${id}`,
             });
-        }
-    })
-    .catch((err) => {
-        res.status(500).send({
-            message: err.message || `Error while retrieving User with id = ${id}`,
         });
-    });
-}
+};
 
 exports.update = (req, res) => {
     const id = req.params.id;

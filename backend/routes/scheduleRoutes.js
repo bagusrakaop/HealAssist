@@ -17,8 +17,10 @@ router.delete("/:id", schedules.delete);
 router.delete("/user/:userId", schedules.deleteByUserId);
 router.post("/food", schedules.addScheduleFood);
 router.get("/:scheduleId/food/:foodId", schedules.getScheduleFood);
+router.put("/:scheduleId/food/:foodId", schedules.editScheduleFood);
 router.post("/exercise", schedules.addScheduleExercise);
 router.get("/:scheduleId/exercise/:exerciseId", schedules.getScheduleExercise);
+router.put("/:scheduleId/exercise/:exerciseId", schedules.editScheduleExercise);
 
 // Untuk ngebuat schedule saat awal bikin akun
 router.post("/user", schedules.createWeeklySchedule);

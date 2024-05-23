@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             this.belongsTo(models.User, {
-                foreignKey: "user_id"
+                foreignKey: "user_id",
             });
         }
     }
@@ -31,27 +31,57 @@ module.exports = (sequelize, DataTypes) => {
             },
             age: DataTypes.INTEGER,
             sex: DataTypes.INTEGER,
-            tall: DataTypes.INTEGER,
+            height: DataTypes.INTEGER,
             weight: DataTypes.INTEGER,
             smoke: DataTypes.INTEGER,
             health: DataTypes.INTEGER,
             checkup: DataTypes.INTEGER,
             exercise: DataTypes.INTEGER,
-            depression: DataTypes.INTEGER,
             diabetes: DataTypes.INTEGER,
-            arthritis: DataTypes.INTEGER,
-            skinCancer: {
+            alcoholDays: {
                 type: DataTypes.INTEGER,
-                field: "skin_cancer",
+                field: "alcohol_days",
             },
-            otherCancer: {
+            generalHealth: {
                 type: DataTypes.INTEGER,
-                field: "other_cancer",
+                field: "general_health",
             },
-            alcohol: DataTypes.INTEGER,
+            mentalHealthDays: {
+                type: DataTypes.INTEGER,
+                field: "mental_health_days",
+            },
             fruit: DataTypes.INTEGER,
-            vegetables: DataTypes.INTEGER,
-            potatoes: DataTypes.INTEGER,
+            cholesterol: DataTypes.INTEGER,
+            tobacco: DataTypes.INTEGER,
+            ecig: DataTypes.INTEGER,
+            averageDrink: {
+                type: DataTypes.INTEGER,
+                field: "average_drink",
+            },
+            maxDrink: {
+                type: DataTypes.INTEGER,
+                field: "max_drink",
+            },
+            fruitJuice: {
+                type: DataTypes.INTEGER,
+                field: "fruit_juice",
+            },
+            greenVegetable: {
+                type: DataTypes.INTEGER,
+                field: "green_vegetable",
+            },
+            friedPotato: {
+                type: DataTypes.INTEGER,
+                field: "fried_potato",
+            },
+            otherPotato: {
+                type: DataTypes.INTEGER,
+                field: "other_potato",
+            },
+            otherVegetable: {
+                type: DataTypes.INTEGER,
+                field: "other_vegetable",
+            },
             prediction: DataTypes.INTEGER,
         },
         {

@@ -1,4 +1,10 @@
-const { Schedule, Food, Exercise, Schedule_Food, Schedule_Exercise } = require("../models");
+const {
+    Schedule,
+    Food,
+    Exercise,
+    Schedule_Food,
+    Schedule_Exercise,
+} = require("../models");
 const db = require("../models/index.js");
 const sequelize = db.sequelize;
 
@@ -7,7 +13,7 @@ exports.create = (req, res) => {
         userId: req.body.userId,
         date: req.body.date,
         time: req.body.time,
-        status: 0
+        status: 0,
     };
 
     Schedule.findOne({
@@ -95,21 +101,60 @@ exports.findByUserId = (req, res) => {
         include: [
             {
                 model: Food,
-                through: { attributes: [] },
+                through: {
+                    attributes: ["status"],
+                    as: "ScheduleFood",
+                },
             },
             {
                 model: Exercise,
-                through: { attributes: [] },
+                through: {
+                    attributes: ["status"],
+                    as: "ScheduleExercise",
+                },
             },
         ],
         order: [
-            ['date', 'ASC'], 
-            ['time', 'ASC'], 
+            ["date", "ASC"],
+            ["time", "ASC"],
         ],
     })
         .then((schedules) => {
             if (schedules.length > 0) {
-                res.send(schedules);
+                // Reformat the data to include status in Food and Exercise directly
+                const reformattedSchedules = schedules.map((schedule) => {
+                    const foods = schedule.Food
+                        ? schedule.Food.map((food) => {
+                              const { ScheduleFood, ...rest } = food.toJSON();
+                              return {
+                                  ...rest,
+                                  status: ScheduleFood
+                                      ? ScheduleFood.status
+                                      : null,
+                              };
+                          })
+                        : [];
+
+                    const exercises = schedule.Exercises
+                        ? schedule.Exercises.map((exercise) => {
+                              const { ScheduleExercise, ...rest } =
+                                  exercise.toJSON();
+                              return {
+                                  ...rest,
+                                  status: ScheduleExercise
+                                      ? ScheduleExercise.status
+                                      : null,
+                              };
+                          })
+                        : [];
+
+                    return {
+                        ...schedule.toJSON(),
+                        Food: foods,
+                        Exercises: exercises,
+                    };
+                });
+                res.send(reformattedSchedules);
             } else {
                 res.status(404).send({
                     message: `No schedules found for User with id = ${userId}`,
@@ -255,6 +300,38 @@ exports.getScheduleFood = (req, res) => {
         });
 };
 
+exports.editScheduleFood = (req, res) => {
+    const { scheduleId, foodId } = req.params;
+    const { status } = req.body;
+
+    Schedule_Food.findOne({
+        where: {
+            schedId: scheduleId,
+            foodId: foodId,
+        },
+    })
+        .then((scheduleFood) => {
+            if (!scheduleFood) {
+                return res
+                    .status(404)
+                    .send({ message: "Schedule_Food not found" });
+            }
+
+            return scheduleFood.update({ status: status });
+        })
+        .then((updatedScheduleFood) => {
+            res.status(200).send({
+                message: "Status updated successfully",
+                updatedScheduleFood,
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || `Error updating status in ScheduleFood`,
+            });
+        });
+};
+
 exports.addScheduleExercise = (req, res) => {
     const { scheduleId, exerciseId } = req.body;
 
@@ -328,10 +405,43 @@ exports.getScheduleExercise = (req, res) => {
         });
 };
 
+exports.editScheduleExercise = (req, res) => {
+    const { scheduleId, exerciseId } = req.params;
+    const { status } = req.body;
+
+    Schedule_Exercise.findOne({
+        where: {
+            schedId: scheduleId,
+            exId: exerciseId,
+        },
+    })
+        .then((ScheduleExercise) => {
+            if (!ScheduleExercise) {
+                return res
+                    .status(404)
+                    .send({ message: "Schedule_Exercise not found" });
+            }
+
+            return ScheduleExercise.update({ status: status });
+        })
+        .then((updatedScheduleExercise) => {
+            res.status(200).send({
+                message: "Status updated successfully",
+                updatedScheduleExercise,
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message || `Error updating status in ScheduleExercise`,
+            });
+        });
+};
+
 exports.createWeeklySchedule = (req, res) => {
     const curDate = new Date();
 
-    const times = ['08:00:00', '12:00:00', '18:00:00'];
+    const times = ["08:00:00", "12:00:00", "18:00:00"];
     let count = 0;
     while (count < 7) {
         let schedDate = new Date();
@@ -341,7 +451,7 @@ exports.createWeeklySchedule = (req, res) => {
                 userId: req.body.userId,
                 date: schedDate,
                 time: time,
-                status: 0
+                status: 0,
             };
 
             Schedule.findOne({
@@ -353,7 +463,7 @@ exports.createWeeklySchedule = (req, res) => {
             })
                 .then((existingSched) => {
                     if (!existingSched) {
-                        Schedule.create(schedule)
+                        Schedule.create(schedule);
                     }
                 })
                 .catch((err) => {
@@ -366,12 +476,12 @@ exports.createWeeklySchedule = (req, res) => {
         }
         count++;
     }
-    res.status(200).send({ message: "Schedule created successfully"});
-}
+    res.status(200).send({ message: "Schedule created successfully" });
+};
 
 exports.addWeeklyFood = (req, res) => {
     userId = req.body.userId;
-    foodIds = req.body.foodIds
+    foodIds = req.body.foodIds;
 
     const getRandomFoodId = () => {
         const randomIndex = Math.floor(Math.random() * foodIds.length);
@@ -384,23 +494,23 @@ exports.addWeeklyFood = (req, res) => {
         .then((schedules) => {
             for (const schedule of schedules) {
                 const foodId = getRandomFoodId();
-                
-                Food.findByPk(foodId)
-                .then((food) => {
-                    schedule
-                        .addFood(food)
-                })
+
+                Food.findByPk(foodId).then((food) => {
+                    schedule.addFood(food);
+                });
             }
         })
         .then(() => {
-            res.status(200).send({ message: "Weekly food added successfully"});
+            res.status(200).send({ message: "Weekly food added successfully" });
         })
         .catch((err) => {
             res.status(500).send({
-                message: err.message || "Some error occurred while adding weekly food.",
+                message:
+                    err.message ||
+                    "Some error occurred while adding weekly food.",
             });
         });
-}
+};
 
 exports.addWeeklyExercise = (req, res) => {
     const userId = req.body.userId;
@@ -413,45 +523,45 @@ exports.addWeeklyExercise = (req, res) => {
 
     Schedule.findAll({
         where: { userId: userId },
-        attributes: [[sequelize.fn('DISTINCT', sequelize.col('date')), 'date']] // Memilih tanggal unik
+        attributes: [[sequelize.fn("DISTINCT", sequelize.col("date")), "date"]], // Memilih tanggal unik
     })
         .then((schedules) => {
-
             for (const schedule of schedules) {
                 const date = schedule.date;
                 let time;
 
                 const randomTimeIndex = Math.floor(Math.random() * 3);
                 if (randomTimeIndex === 0) {
-                    time = '08:00:00';
+                    time = "08:00:00";
                 } else if (randomTimeIndex === 1) {
-                    time = '12:00:00';
+                    time = "12:00:00";
                 } else {
-                    time = '18:00:00';
+                    time = "18:00:00";
                 }
 
                 Schedule.findOne({
                     where: { userId: userId, date: date, time: time },
-                })
-                    .then((schedule) => {
-                        if (schedule) {
-                            const exId = getRandomExId();
-                            // Tambahkan pasangan scheduleId dan exerciseId ke tabel Exercise_Schedule
-                            Exercise.findByPk(exId)
-                            .then((exercise) => {
-                                schedule
-                                    .addExercise(exercise)
-                            })
-                        }
-                    })
+                }).then((schedule) => {
+                    if (schedule) {
+                        const exId = getRandomExId();
+                        // Tambahkan pasangan scheduleId dan exerciseId ke tabel Exercise_Schedule
+                        Exercise.findByPk(exId).then((exercise) => {
+                            schedule.addExercise(exercise);
+                        });
+                    }
+                });
             }
         })
         .then(() => {
-            res.status(200).send({ message: "Weekly exercise added successfully"})
+            res.status(200).send({
+                message: "Weekly exercise added successfully",
+            });
         })
         .catch((err) => {
             res.status(500).send({
-                message: err.message || "Some error occurred while adding weekly exercise.",
+                message:
+                    err.message ||
+                    "Some error occurred while adding weekly exercise.",
             });
         });
 };
