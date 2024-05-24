@@ -24,11 +24,9 @@ router.put("/:scheduleId/exercise/:exerciseId", schedules.editScheduleExercise);
 
 // Untuk ngebuat schedule saat awal bikin akun
 router.post("/user", schedules.createWeeklySchedule);
-
-// Untuk setelah milih makanan kesukaan
 router.post("/user/foods", schedules.addWeeklyFood);
-
-// Untuk setelah milih olahraga kesukaan
 router.post("/user/exercise", schedules.addWeeklyExercise);
+
+router.get("/closest/:userId", schedules.getClosestSchedule);
 
 module.exports = router;

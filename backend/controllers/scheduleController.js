@@ -5,6 +5,8 @@ const {
     Schedule_Food,
     Schedule_Exercise,
 } = require("../models");
+const { Op } = require("sequelize");
+
 const db = require("../models/index.js");
 const sequelize = db.sequelize;
 
@@ -446,6 +448,9 @@ exports.createWeeklySchedule = (req, res) => {
     while (count < 7) {
         let schedDate = new Date();
         schedDate.setDate(curDate.getDate() + 1 + count);
+        schedDate.setHours(0); // set hours to 0
+        schedDate.setMinutes(0); // set minutes to 0
+        schedDate.setSeconds(0); // set seconds to 0
         for (const time of times) {
             const schedule = {
                 userId: req.body.userId,
@@ -564,4 +569,45 @@ exports.addWeeklyExercise = (req, res) => {
                     "Some error occurred while adding weekly exercise.",
             });
         });
+};
+
+exports.getClosestSchedule = async (req, res) => {
+    const userId = req.params.userId;
+    const currentDate = new Date(); // Mendapatkan tanggal dan waktu saat ini
+
+    // Mendapatkan tanggal saat ini
+    const dateOnly = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate()
+    );
+
+    try {
+        const closestData = await Schedule.findAll({
+            where: {
+                userId: userId,
+                date: {
+                    [Op.gte]: dateOnly,
+                    [Op.lt]: new Date(dateOnly.getTime() + 24 * 60 * 60 * 1000), // add 1 day to dateOnly
+                },
+            },
+            include: [
+                {
+                    model: Exercise,
+                    required: true,
+                },
+            ],
+            order: [
+                ["date", "ASC"],
+                ["time", "ASC"],
+            ],
+        });
+
+        res.status(200).send(closestData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: err.message || "Internal server error",
+        });
+    }
 };

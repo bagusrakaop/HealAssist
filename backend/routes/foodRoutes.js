@@ -10,11 +10,13 @@ router.get("/", foods.findAll);
 router.get("/:id", foods.findOne);
 router.put("/:id", foods.update);
 router.delete("/:id", foods.delete);
-router.post("/user", foods.addUserFood);
-router.get("/user/:userId", foods.getUserFood);
-router.delete("/:foodId/user/:userId", foods.deleteUserFood);
 
 // Untuk ngedit makanan user (sekaligus update schedule)
+router.post("/user", foods.changeUserFood);
+
+// get user fav food
+router.get("/user/:userId", foods.getUserFood);
+router.delete("/:foodId/user/:userId", foods.deleteUserFood);
 router.put("/user/:userId", foods.editWeeklyFood);
 
 module.exports = router;
