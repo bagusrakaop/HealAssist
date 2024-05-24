@@ -1,13 +1,15 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/modalContext";
 import { handleUserLogin } from "@/services/auth.services";
+import ForgotPasswordModal from "./forgotPasswordModal";
 
 const SignInModal = ({ onClose }) => {
     const { openSignUpModal } = useModal();
     const [isVisible, setIsVisible] = useState(false);
+    const forgotPasswordRef = useRef(null);
     const router = useRouter();
 
     const [formData, setFormData] = useState({
@@ -44,12 +46,19 @@ const SignInModal = ({ onClose }) => {
         setIsVisible(true);
     }, []);
 
+    const handleForgotPasswordClick = () => {
+        if (forgotPasswordRef.current) {
+            forgotPasswordRef.current.showModal();
+        }
+    };
+
     return (
         <>
             <dialog
                 open={isVisible}
                 className="modal modal-enter modal-enter-active"
             >
+                <ForgotPasswordModal ref={forgotPasswordRef} />
                 <div className="modal-box max-w-fit p-0 rounded-md bg-neutral text-primary">
                     <div className="flex justify-end m-1">
                         <button
@@ -82,7 +91,7 @@ const SignInModal = ({ onClose }) => {
                                             <p className="font-bold">Email</p>
                                             <input
                                                 type="email"
-                                                placeholder="YourEmail@domain,com"
+                                                placeholder="YourEmail@domain.com"
                                                 className="input input-xs input-bordered w-full max-w-xs py-4"
                                                 name="email"
                                                 value={formData.email}
@@ -101,7 +110,15 @@ const SignInModal = ({ onClose }) => {
                                                 value={formData.password}
                                                 onChange={handleChange}
                                             />
-                                            <p>Forgot Your Password?</p>
+                                            <button
+                                                type="button"
+                                                onClick={
+                                                    handleForgotPasswordClick
+                                                }
+                                                className="text-left"
+                                            >
+                                                Forgot Your Password?
+                                            </button>
                                         </div>
                                         <div className="flex justify-end">
                                             <button className="btn btn-sm btn-primary">

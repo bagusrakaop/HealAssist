@@ -33,13 +33,14 @@ const Navbar = () => {
         Cookies.remove("token");
         Cookies.remove("id");
         Cookies.remove("username");
+        setIsLoggedIn(false);
         router.push(`/`);
     };
 
     return (
         <>
             <div className="w-full h-16 fixed top-0 flex items-center bg-neutral justify-between py-4 shadow-md z-50">
-                <button onClick={() => handleButtonClick("logo")}>
+                <button>
                     <Image
                         className="pl-10"
                         src="/navbar-logo.svg"

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useModal } from "@/contexts/modalContext";
 import { sendOTP, handleUserRegister } from "@/services/auth.services";
+import { createSchedule } from "@/services/schedule.services";
 
 const SignUpModal = ({ onClose }) => {
     const { openSignInModal } = useModal();
@@ -65,6 +66,7 @@ const SignUpModal = ({ onClose }) => {
                 Cookies.remove("hash");
                 onClose();
                 router.push("/home");
+                const response = await createSchedule(res.data.id);
             }
         } catch (error) {
             console.error(error);

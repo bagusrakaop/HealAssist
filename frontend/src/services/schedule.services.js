@@ -105,3 +105,38 @@ export const missedExerciseSchedule = async (schedId, exId) => {
             });
     });
 };
+
+export const createSchedule = async (userId) => {
+    let body = {
+        userId: userId,
+    };
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${BASE_URL}/schedule/user`, body)
+            .then((response) => {
+                resolve(response?.data);
+            })
+            .catch((err) => {
+                reject(err.response?.data);
+            });
+    });
+};
+
+export const getClosestSchedule = async () => {
+    let token = Cookies.get("token");
+    let id = Cookies.get("id");
+    return new Promise((resolve, reject) => {
+        axios
+            .get(`${BASE_URL}/schedule/closest/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                resolve(response?.data);
+            })
+            .catch((err) => {
+                reject(err.response?.data);
+            });
+    });
+};
