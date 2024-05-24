@@ -3,18 +3,22 @@ import { predictCVD } from "@/services/predict.services";
 import { handleSaveHealth } from "@/services/health.services";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useRef } from "react";
 
 const SurveyModal = ({}) => {
     const router = useRouter();
+    const modalRef = useRef(null);
+    const username = Cookies.get("username");
+
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
 
         const postData = {
-            diabetes: parseInt(formData.get("diabetes")),
-            bloodPressure: parseInt(formData.get("bloodPressure")),
-            generalHealth: parseInt(formData.get("generalHealth")),
-            mentalHealthDays: parseInt(formData.get("mentalHealthDays")),
+            DIABETE4: parseInt(formData.get("diabetes")),
+            BPHIGH6: parseInt(formData.get("bloodPressure")),
+            GENHLTH: parseInt(formData.get("generalHealth")),
+            MENTHLTH: parseInt(formData.get("mentalHealthDays")),
             CHECKUP1: parseInt(formData.get("checkup")),
             EXERANY2: parseInt(formData.get("exercise")),
             TOLDHI3: parseInt(formData.get("cholesterol")),
@@ -38,37 +42,40 @@ const SurveyModal = ({}) => {
 
         try {
             const res = await predictCVD(postData);
-            if (res.success) {
+            if (res["CVD Prediction"]) {
                 const saveData = {
-                    diabetes: postData.get("DIABETE4"),
-                    bloodPressure: postData.get("BPHIGH6"),
-                    generalHealth: postData.get("GENHLTH"),
-                    mentalHealthDays: postData.get("MENTHLTH"),
-                    checkup: postData.get("CHECKUP1"),
-                    exercise: postData.get("EXERANY2"),
-                    cholesterol: postData.get("TOLDHI3"),
-                    age: postData.get("_AGE80"),
-                    weight: postData.get("WEIGHT2"),
-                    height: postData.get("HEIGHT3"),
-                    smoke: postData.get("SMOKE100"),
-                    tobacco: postData.get("USENOW3"),
-                    ecig: postData.get("ECIGNOW1"),
-                    alcoholDays: postData.get("ALCDAY5"),
-                    averageDrink: postData.get("AVEDRNK3"),
-                    maxDrink: postData.get("MAXDRNKS"),
-                    fruit: postData.get("FRUIT2"),
-                    fruitJuice: postData.get("FRUITJU2"),
-                    greenVegetable: postData.get("FVGREEN1"),
-                    friedPotato: postData.get("FRENCHF1"),
-                    otherPotato: postData.get("HEIGHT3"),
-                    otherVegetable: postData.get("POTATOE1"),
-                    SEXVAR: postData.get("SEXVAR"),
-                    sex: res.data,
-                    userId: Cookies.userId,
+                    diabetes: postData.DIABETE4,
+                    bloodPressure: postData.BPHIGH6,
+                    generalHealth: postData.GENHLTH,
+                    mentalHealthDays: postData.MENTHLTH,
+                    checkup: postData.CHECKUP1,
+                    exercise: postData.EXERANY2,
+                    cholesterol: postData.TOLDHI3,
+                    age: postData._AGE80,
+                    weight: postData.WEIGHT2,
+                    height: postData.HEIGHT3,
+                    smoke: postData.SMOKE100,
+                    tobacco: postData.USENOW3,
+                    ecig: postData.ECIGNOW1,
+                    alcoholDays: postData.ALCDAY5,
+                    averageDrink: postData.AVEDRNK3,
+                    maxDrink: postData.MAXDRNKS,
+                    fruit: postData.FRUIT2,
+                    fruitJuice: postData.FRUITJU2,
+                    greenVegetable: postData.FVGREEN1,
+                    friedPotato: postData.FRENCHF1,
+                    otherPotato: postData.POTATOE1,
+                    otherVegetable: postData.VEGETAB2,
+                    sex: postData.SEXVAR,
+                    prediction: res["CVD Prediction"],
+                    userId: parseInt(Cookies.get("id")),
                 };
                 const response = await handleSaveHealth(saveData);
-                if (response.data) {
-                    router.push("/home");
+                if (response) {
+                    if (modalRef.current) {
+                        modalRef.current.close();
+                        router.push("/home");
+                    }
                 }
             }
         } catch (error) {
@@ -78,7 +85,7 @@ const SurveyModal = ({}) => {
 
     return (
         <>
-            <dialog id="survey" className="modal">
+            <dialog ref={modalRef} id="survey" className="modal">
                 <div className="modal-box max-w-fit rounded-md bg-neutral text-primary">
                     <div className="flex justify-end m-1">
                         <form method="dialog">
@@ -88,7 +95,7 @@ const SurveyModal = ({}) => {
                         </form>
                     </div>
                     <div className="text-center font-bold text-xl pt-2">
-                        Hi User!
+                        Hi {username}!
                     </div>
                     <div className="text-center font-bold text-xl pb-10">
                         Answer the following questions to get the best

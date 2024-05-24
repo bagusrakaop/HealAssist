@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { getUserProfile, editUserProfile } from "@/services/profile.services";
+import { sendResetPassword } from "@/services/auth.services";
 
 export default function Profile() {
     const [profile, setProfile] = useState({});
-    const [name, setName] = useState(profile.name);
+    const [name, setName] = useState("");
+    const [loading, setLoading] = useState(true); // Add a loading state
     const router = useRouter();
 
     useEffect(() => {
@@ -21,6 +23,8 @@ export default function Profile() {
         getUserProfile()
             .then((res) => {
                 setProfile(res);
+                setName(res.name); // Set the initial name value
+                setLoading(false); // Set loading to false when data is fetched
             })
             .catch((error) => {
                 console.error("Error fetching profile data:", error);
@@ -46,6 +50,25 @@ export default function Profile() {
             console.error(error);
         }
     };
+
+    const handleSubmit = async () => {
+        try {
+            let formData = {
+                email: profile.email,
+            };
+            const res = await sendResetPassword(formData);
+            if (res && res.message) {
+                console.log(res.message);
+                // Assuming onClose is passed as a prop
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    if (loading) {
+        return <div className="bg-white text-primary">Loading...</div>;
+    }
 
     return (
         <main className="w-full bg-neutral min-h-screen">
@@ -107,7 +130,10 @@ export default function Profile() {
                     </div>
                     <div className="h-0.5 w-full bg-lightgrey my-3"></div>
                     <div className="flex justify-center w-full">
-                        <button className="btn btn-sm btn-primary px-auto my-5">
+                        <button
+                            className="btn btn-sm btn-primary px-auto my-5"
+                            onClick={handleSubmit}
+                        >
                             Reset Password
                         </button>
                     </div>

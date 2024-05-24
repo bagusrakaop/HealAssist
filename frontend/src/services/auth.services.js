@@ -40,3 +40,29 @@ export const handleUserRegister = async (body) => {
             });
     });
 };
+
+export const sendResetPassword = async (body) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${BASE_URL}/auth/forgot-password`, body)
+            .then((response) => {
+                resolve(response?.data);
+            })
+            .catch((err) => {
+                reject(err.response?.data);
+            });
+    });
+};
+
+export const handleResetPassword = async (body) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${BASE_URL}/auth/reset-password`, body)
+            .then((response) => {
+                resolve(response?.data);
+            })
+            .catch((err) => {
+                reject(err.response?.data);
+            });
+    });
+};
