@@ -3,23 +3,28 @@ const { Health } = require("../models");
 exports.create = (req, res) => {
     const health = {
         userId: req.body.userId,
-        age: req.body.age,
-        sex: req.body.sex,
-        tall: req.body.tall,
-        weight: req.body.weight,
-        smoke: req.body.smoke,
-        health: req.body.health,
+        diabetes: req.body.diabetes,
+        bloodPressure: req.body.bloodPressure,
+        generalHealth: req.body.generalHealth,
+        mentalHealthDays: req.body.mentalHealthDays,
         checkup: req.body.checkup,
         exercise: req.body.exercise,
-        depression: req.body.depression,
-        diabetes: req.body.diabetes,
-        arthritis: req.body.arthritis,
-        skinCancer: req.body.skinCancer,
-        otherCancer: req.body.otherCancer,
-        alcohol: req.body.alcohol,
+        cholesterol: req.body.cholesterol,
+        age: req.body.age,
+        weight: req.body.weight,
+        height: req.body.height,
+        smoke: req.body.smoke,
+        ecig: req.body.ecig,
+        alcoholDays: req.body.alcoholDays,
+        averageDrink: req.body.averageDrink,
+        maxDrink: req.body.maxDrink,
         fruit: req.body.fruit,
-        vegetables: req.body.vegetables,
-        potatoes: req.body.potatoes,
+        fruitJuice: req.body.fruitJuice,
+        greenVegetable: req.body.greenVegetable,
+        friedPotato: req.body.friedPotato,
+        otherPotato: req.body.otherPotato,
+        otherVegetable: req.body.otherVegetable,
+        sex: req.body.sex,
     };
 
     Health.findOne({ where: { userId: health.userId } })
@@ -28,17 +33,20 @@ exports.create = (req, res) => {
                 Health.update(req.body, { where: { id: existingHealth.id } })
                     .then((num) => {
                         if (num == 1) {
-                            res.send({ message: `Health ${id} is updated` });
+                            res.send({
+                                message: `Health ${existingHealth.id} is updated`,
+                            });
                         } else {
                             res.status(400).send({
-                                message: `Cannot update Health ${id}`,
+                                message: `Cannot update Health ${existingHealth.id}`,
                             });
                         }
                     })
                     .catch((err) => {
                         res.status(500).send({
                             message:
-                                err.message || `Error updating Health ${id}`,
+                                err.message ||
+                                `Error updating Health ${existingHealth.id}`,
                         });
                     });
             } else {

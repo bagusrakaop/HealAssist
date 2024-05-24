@@ -1,11 +1,13 @@
-const { Exercise, User, Schedule } = require("../models");
+const { Exercise, User, Schedule, Food } = require("../models");
+const db = require("../models/index.js");
+const sequelize = db.sequelize;
 
 exports.create = (req, res) => {
     const exercise = {
         name: req.body.name,
         calBurned: req.body.calBurned,
         duration: req.body.duration,
-        picture: req.body.picture
+        picture: req.body.picture,
     };
 
     Exercise.create(exercise)
@@ -200,37 +202,88 @@ exports.deleteUserExercise = (req, res) => {
 
 exports.editWeeklyExercise = (req, res) => {
     const userId = req.params.userId;
-    const exIds = req.body.exIds
+    const exIds = req.body.exIds;
 
     Schedule.findAll({
         where: { userId: userId },
-        include: [{
-            model: Exercise,
-            through: { attributes: [] }, // Exclude join table attributes
-            required: true 
-        }]
+        include: [
+            {
+                model: Exercise,
+                through: { attributes: [] }, // Exclude join table attributes
+                required: true,
+            },
+        ],
     })
-    .then((schedules) => {
-        const promises = [];
+        .then((schedules) => {
+            const promises = [];
 
-        const getRandomExId = () => {
-            const randomIndex = Math.floor(Math.random() * exIds.length);
-            return exIds[randomIndex];
-        };
+            const getRandomExId = () => {
+                const randomIndex = Math.floor(Math.random() * exIds.length);
+                return exIds[randomIndex];
+            };
 
-        for (const schedule of schedules) {
-            const exId = getRandomExId();
-            promises.push(schedule.setExercises([exId]));
-        }
+            for (const schedule of schedules) {
+                const exId = getRandomExId();
+                promises.push(schedule.setExercises([exId]));
+            }
 
-        return Promise.all(promises);
-    })
+            return Promise.all(promises);
+        })
         .then(() => {
-            res.status(200).send({ message: "Exercise changed successfully"});
+            res.status(200).send({ message: "Exercise changed successfully" });
         })
         .catch((err) => {
             res.status(500).send({
                 message: err.message || "Internal server error",
             });
         });
-}
+};
+
+exports.changeUserExercise = async (req, res) => {
+    const { userId, exIds } = req.body;
+    const getRandomExId = () => exIds[Math.floor(Math.random() * exIds.length)];
+
+    try {
+        // Delete existing exercises
+        const schedules = await Schedule.findAll({
+            where: { userId },
+            include: [{ model: Exercise, through: { attributes: [] } }],
+        });
+        await Promise.all(
+            schedules.map((schedule) => schedule.setExercises([]))
+        );
+
+        // Get unique dates
+        const dateSchedules = await Schedule.findAll({
+            where: { userId },
+            attributes: [
+                [sequelize.fn("DISTINCT", sequelize.col("date")), "date"],
+            ],
+        });
+
+        // Add new exercises
+        await Promise.all(
+            dateSchedules.map(async (schedule) => {
+                const date = schedule.date;
+                const time = ["08:00:00", "12:00:00", "18:00:00"][
+                    Math.floor(Math.random() * 3)
+                ];
+                const existingSchedule = await Schedule.findOne({
+                    where: { userId, date, time },
+                });
+                if (existingSchedule) {
+                    const exId = getRandomExId();
+                    const exercise = await Exercise.findByPk(exId);
+                    await existingSchedule.addExercise(exercise);
+                }
+            })
+        );
+
+        res.status(200).send({ message: "Exercise changed successfully" });
+    } catch (err) {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while changing exercise.",
+        });
+    }
+};

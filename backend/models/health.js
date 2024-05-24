@@ -34,7 +34,10 @@ module.exports = (sequelize, DataTypes) => {
             height: DataTypes.INTEGER,
             weight: DataTypes.INTEGER,
             smoke: DataTypes.INTEGER,
-            health: DataTypes.INTEGER,
+            bloodPressure: {
+                type: DataTypes.INTEGER,
+                field: "blood_pressure",
+            },
             checkup: DataTypes.INTEGER,
             exercise: DataTypes.INTEGER,
             diabetes: DataTypes.INTEGER,
