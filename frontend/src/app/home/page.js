@@ -9,7 +9,7 @@ import { getUserHealth } from "@/services/health.services";
 
 export default function Homepage() {
     const [username, setUsername] = useState(null);
-    const [health, setHealth] = useState({});
+    const [health, setHealth] = useState(null);
 
     useEffect(() => {
         const usernameCookie = Cookies.get("username");
@@ -23,6 +23,7 @@ export default function Homepage() {
             getUserHealth()
                 .then((res) => {
                     setHealth(res);
+                    console.log(res);
                 })
                 .catch((error) => {
                     console.error("Error fetching health data:", error);
@@ -44,16 +45,24 @@ export default function Homepage() {
                 <div className="text-2xl text-center font-bold">
                     here is your current condition
                 </div>
-                <div className="flex flex-row justify-center items-center">
-                    <div className="text-2xl font-medium">
-                        You have a {health.prediction * 100 || 90}% risk of
-                        having cardiovascular disease
+                {!health ? (
+                    <div className="text-center font-bold text-red-500">
+                        Please fill the health survey first
                     </div>
-                    <Pie
-                        percentage={health.prediction * 100 || 90}
-                        color={"#FFAC52"}
-                    />
-                </div>
+                ) : (
+                    <>
+                        <div className="flex flex-row justify-center items-center">
+                            <div className="text-2xl font-medium">
+                                You have a {health.prediction * 100}% risk of
+                                having cardiovascular disease
+                            </div>
+                            <Pie
+                                percentage={health.prediction * 100}
+                                color={"#FFAC52"}
+                            />
+                        </div>
+                    </>
+                )}
             </div>
             <div className="flex flex-col text-primary py-10">
                 <div className="flex flex-row justify-center items-center gap-x-10">

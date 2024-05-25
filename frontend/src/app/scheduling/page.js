@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { format } from "date-fns";
+import { format, addMonths, subMonths } from "date-fns";
 
 import RecommendationCard from "@/components/scheduling/recommendationCard";
 import { getUserSchedule } from "@/services/schedule.services";
@@ -13,6 +13,7 @@ export default function SchedulingPage() {
     const [startIndex, setStartIndex] = useState(0);
     const [selectedData, setSelectedData] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [currentMonth, setCurrentMonth] = useState(new Date());
     const itemsPerPage = 6;
     const router = useRouter();
 
@@ -47,7 +48,6 @@ export default function SchedulingPage() {
     const handleSelectedData = (date) => {
         let data = reformattedData.filter((entry) => entry.date === date);
         setSelectedDate(date);
-        console.log(data);
         setSelectedData(data);
     };
 
@@ -120,7 +120,7 @@ export default function SchedulingPage() {
     }, []);
 
     const handleNext = () => {
-        if (startIndex + itemsPerPage < uniqueSchedules.length) {
+        if (startIndex + itemsPerPage < currentSchedules.length) {
             setStartIndex(startIndex + 1);
         }
     };
@@ -131,7 +131,25 @@ export default function SchedulingPage() {
         }
     };
 
-    const currentSchedules = uniqueSchedules.slice(
+    const handleNextMonth = () => {
+        setCurrentMonth(addMonths(currentMonth, 1));
+        setStartIndex(0); // Reset start index when changing the month
+    };
+
+    const handlePrevMonth = () => {
+        setCurrentMonth(subMonths(currentMonth, 1));
+        setStartIndex(0); // Reset start index when changing the month
+    };
+
+    const currentSchedules = uniqueSchedules.filter((entry) => {
+        const entryDate = new Date(entry.date);
+        return (
+            entryDate.getMonth() === currentMonth.getMonth() &&
+            entryDate.getFullYear() === currentMonth.getFullYear()
+        );
+    });
+
+    const visibleSchedules = currentSchedules.slice(
         startIndex,
         startIndex + itemsPerPage
     );
@@ -144,7 +162,7 @@ export default function SchedulingPage() {
                 </div>
                 {/* Month */}
                 <div className="flex text-primary my-2">
-                    <button>
+                    <button onClick={handlePrevMonth}>
                         <Image
                             src="/arrowbutton.svg"
                             alt="Left Arrow Button"
@@ -154,9 +172,9 @@ export default function SchedulingPage() {
                         />
                     </button>
                     <div className="text-2xl font-bold mx-8">
-                        {format(selectedDate, "MMMM yyyy")}
+                        {format(currentMonth, "MMMM yyyy")}
                     </div>
-                    <button>
+                    <button onClick={handleNextMonth}>
                         <Image
                             src="/arrowbutton.svg"
                             alt="Right Arrow Button"
@@ -180,7 +198,7 @@ export default function SchedulingPage() {
                     </button>
                     {/* Day Tabs */}
                     <div className="mx-6 flex">
-                        {currentSchedules.map((entry) => {
+                        {visibleSchedules.map((entry) => {
                             const formattedDate = format(
                                 new Date(entry.date),
                                 "EEE, d MMM"
@@ -201,7 +219,7 @@ export default function SchedulingPage() {
                     <button
                         onClick={handleNext}
                         disabled={
-                            startIndex + itemsPerPage >= uniqueSchedules.length
+                            startIndex + itemsPerPage >= currentSchedules.length
                         }
                     >
                         <Image

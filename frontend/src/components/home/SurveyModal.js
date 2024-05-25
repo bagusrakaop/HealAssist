@@ -42,6 +42,8 @@ const SurveyModal = ({}) => {
 
         try {
             const res = await predictCVD(postData);
+            console.log(res);
+            console.log(res["CVD Prediction"]);
             if (res["CVD Prediction"]) {
                 const saveData = {
                     diabetes: postData.DIABETE4,

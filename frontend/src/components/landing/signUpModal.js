@@ -65,8 +65,8 @@ const SignUpModal = ({ onClose }) => {
             if (res && res.data) {
                 Cookies.remove("hash");
                 onClose();
-                router.push("/home");
-                const response = await createSchedule(res.data.id);
+                router.push("/");
+                openSignInModal();
             }
         } catch (error) {
             console.error(error);
