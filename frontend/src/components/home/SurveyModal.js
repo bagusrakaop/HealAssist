@@ -44,8 +44,7 @@ const SurveyModal = ({}) => {
         try {
             const res = await predictCVD(postData);
             console.log(res);
-            console.log(res["Probability"]);
-            if (res["Probability"]) {
+            if (res) {
                 const saveData = {
                     diabetes: postData.DIABETE4,
                     bloodPressure: postData.BPHIGH6,
@@ -70,7 +69,7 @@ const SurveyModal = ({}) => {
                     otherPotato: postData.POTATOE1,
                     otherVegetable: postData.VEGETAB2,
                     sex: postData.SEXVAR,
-                    prediction: parseInt(res["Probability"] * 100),
+                    prediction: res['CVD Prediction'],
                     userId: parseInt(Cookies.get("id")),
                 };
                 console.log(saveData.prediction);

@@ -59,14 +59,16 @@ export default function Homepage() {
                 ) : (
                     <>
                         <div className="flex flex-row justify-center items-center">
-                            <div className="text-2xl font-medium">
-                                You have a {health.prediction}% risk of having
-                                cardiovascular disease
+                            <div className="text-2xl font-medium pt-5">
+                                {health.prediction === 1 
+                                    ? "You have a risk of cardiovascular disease, let's fix your daily habit with us!" 
+                                    : "You do not have a risk of cardiovascular disease, keep it up!"
+                                }
                             </div>
-                            <Pie
+                            {/* <Pie
                                 percentage={health.prediction}
                                 color={"#FFAC52"}
-                            />
+                            /> */}
                         </div>
                     </>
                 )}
