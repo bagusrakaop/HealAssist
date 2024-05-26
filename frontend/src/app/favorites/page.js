@@ -4,17 +4,36 @@ import Cookies from "js-cookie";
 import Card from "@/components/CardContainer";
 import Image from "next/image";
 import AddFavoritesModal from "@/components/favorites/addFavoritesModal";
+import { getAllFoods, getAllExercises } from "@/services/favorites.services";
 
 export default function Favorites() {
   const [isFoodModalOpen, setIsFoodModalOpen] = useState(false);
   const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
+  const [allFoods, setAllFoods] = useState([]);
+  const [allExercises, setAllExercises] = useState([]);
 
   useEffect(() => {
     const token = Cookies.get("token");
     if (!token) {
-        router.replace("/");
+      router.replace("/");
+    } else {
+      getAllFoods()
+        .then((foods) => {
+          setAllFoods(foods);
+        })
+        .catch((error) => {
+          console.error("Error fetching favorite foods:", error);
+        });
+
+      getAllExercises()
+        .then((exercises) => {
+          setAllExercises(exercises);
+        })
+        .catch((error) => {
+          console.error("Error fetching favorite exercises:", error);
+        });
     }
-}, []);
+  }, []);
 
   return (
     <main className="w-full bg-neutral min-h-screen">
@@ -23,9 +42,9 @@ export default function Favorites() {
         <div className="w-4/5">
           <div className="font-bold text-2xl text-primary mb-4">Your Favorite Food</div>
           <div className="flex flex-wrap gap-8">
-            <Card image="/food-beef.png" captions="Barbaque Beef with Tomato Sauce" filled={false} />
-            <Card image="/food-beef.png" captions="Barbaque Beef with Tomato Sauce" filled={false} />
-            <Card image="/food-beef.png" captions="Barbaque Beef with Tomato Sauce" filled={false} />
+            {allFoods.map((food) => (
+              <Card key={food.id} image={food.picture} captions={food.name} filled={true} />
+            ))}
             {/* Button Add Favorite Food */}
             <button className="my-auto" onClick={() => setIsFoodModalOpen(true)}>
               <Image src="/add-favorite-button.svg" alt="Add Favorite" width={100} height={100} priority />
@@ -37,8 +56,10 @@ export default function Favorites() {
         <div className="w-4/5 mt-10">
           <div className="font-bold text-2xl text-primary mb-4">Your Favorite Exercise</div>
           <div className="flex flex-wrap gap-8">
-            <Card image="/exercise-swimming.png" captions="Swimming" filled={false} />
-            <Card image="/exercise-swimming.png" captions="Swimming" filled={false} />
+            {allExercises.map((exercise) => (
+              <Card key={exercise.id} image={exercise.picture} captions={exercise.name} filled={true} />
+            ))}
+
             {/* Button Add Favorite Exercise */}
             <button className="my-auto" onClick={() => setIsExerciseModalOpen(true)}>
               <Image src="/add-favorite-button.svg" alt="Add Favorite" width={100} height={100} priority />
@@ -51,10 +72,9 @@ export default function Favorites() {
       {isFoodModalOpen && (
         <AddFavoritesModal title="Select All Foods That You Like" onClose={() => setIsFoodModalOpen(false)}>
           <div className="flex flex-wrap gap-8">
-            <Card image="/food-beef.png" captions="Barbaque Beef with Tomato Sauce" filled={false} />
-            <Card image="/food-beef.png" captions="Barbaque Beef with Tomato Sauce" filled={false} />
-            <Card image="/food-beef.png" captions="Barbaque Beef with Tomato Sauce" filled={false} />
-            <Card image="/food-beef.png" captions="Barbaque Beef with Tomato Sauce" filled={false} />
+            {allFoods.map((food) => (
+              <Card key={food.id} image={food.picture} captions={food.name} filled={false} />
+            ))}
           </div>
           <div className="flex gap-8 justify-end my-6">
             <button className="btn btn-sm btn-error my-1 text-white" onClick={() => setIsFoodModalOpen(false)}>
@@ -68,10 +88,9 @@ export default function Favorites() {
       {isExerciseModalOpen && (
         <AddFavoritesModal title="Select All Exercises That You Like" onClose={() => setIsExerciseModalOpen(false)}>
           <div className="flex flex-wrap gap-8">
-            <Card image="/exercise-swimming.png" captions="Swimming" filled={false} />
-            <Card image="/exercise-swimming.png" captions="Swimming" filled={false} />
-            <Card image="/exercise-swimming.png" captions="Swimming" filled={false} />
-            <Card image="/exercise-swimming.png" captions="Swimming" filled={false} />
+            {allExercises.map((exercise) => (
+              <Card key={exercise.id} image={exercise.picture} captions={exercise.name} filled={false} />
+            ))}
           </div>
           <div className="flex gap-8 justify-end my-6">
             <button className="btn btn-sm btn-error my-1 text-white" onClick={() => setIsExerciseModalOpen(false)}>
