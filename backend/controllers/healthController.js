@@ -25,6 +25,8 @@ exports.create = (req, res) => {
         otherPotato: req.body.otherPotato,
         otherVegetable: req.body.otherVegetable,
         sex: req.body.sex,
+        prediction: req.body.prediction,
+        tobacco: req.body.tobacco,
     };
 
     Health.findOne({ where: { userId: health.userId } })

@@ -44,8 +44,8 @@ const SurveyModal = ({}) => {
         try {
             const res = await predictCVD(postData);
             console.log(res);
-            console.log(res["CVD Prediction"]);
-            if (res["CVD Prediction"]) {
+            console.log(res["Probability"]);
+            if (res["Probability"]) {
                 const saveData = {
                     diabetes: postData.DIABETE4,
                     bloodPressure: postData.BPHIGH6,
@@ -70,15 +70,16 @@ const SurveyModal = ({}) => {
                     otherPotato: postData.POTATOE1,
                     otherVegetable: postData.VEGETAB2,
                     sex: postData.SEXVAR,
-                    prediction: res["CVD Prediction"],
+                    prediction: parseInt(res["Probability"] * 100),
                     userId: parseInt(Cookies.get("id")),
                 };
+                console.log(saveData.prediction);
                 const response = await handleSaveHealth(saveData);
                 if (response) {
                     toast.success("Prediction is created");
                     if (modalRef.current) {
                         modalRef.current.close();
-                        router.push("/home");
+                        window.location.reload();
                     }
                 }
             }

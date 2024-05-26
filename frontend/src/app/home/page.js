@@ -60,11 +60,11 @@ export default function Homepage() {
                     <>
                         <div className="flex flex-row justify-center items-center">
                             <div className="text-2xl font-medium">
-                                You have a {health.prediction * 100}% risk of
-                                having cardiovascular disease
+                                You have a {health.prediction}% risk of having
+                                cardiovascular disease
                             </div>
                             <Pie
-                                percentage={health.prediction * 100}
+                                percentage={health.prediction}
                                 color={"#FFAC52"}
                             />
                         </div>
