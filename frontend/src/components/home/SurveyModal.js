@@ -4,6 +4,7 @@ import { handleSaveHealth } from "@/services/health.services";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useRef } from "react";
+import { toast } from "react-hot-toast";
 
 const SurveyModal = ({}) => {
     const router = useRouter();
@@ -74,6 +75,7 @@ const SurveyModal = ({}) => {
                 };
                 const response = await handleSaveHealth(saveData);
                 if (response) {
+                    toast.success("Prediction is created");
                     if (modalRef.current) {
                         modalRef.current.close();
                         router.push("/home");
@@ -82,6 +84,7 @@ const SurveyModal = ({}) => {
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 

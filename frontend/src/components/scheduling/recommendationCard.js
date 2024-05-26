@@ -50,6 +50,7 @@ function RecommendationCard({
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 
@@ -68,6 +69,7 @@ function RecommendationCard({
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 

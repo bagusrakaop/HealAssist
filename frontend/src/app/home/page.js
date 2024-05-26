@@ -12,6 +12,13 @@ export default function Homepage() {
     const [health, setHealth] = useState(null);
 
     useEffect(() => {
+        const token = Cookies.get("token");
+        if (!token) {
+            router.replace("/");
+        }
+    }, []);
+
+    useEffect(() => {
         const usernameCookie = Cookies.get("username");
         if (usernameCookie) {
             setUsername(usernameCookie);

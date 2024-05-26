@@ -5,6 +5,7 @@ import "./globals.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { Toaster, toast } from "react-hot-toast";
 
 import { ModalProvider, useModal } from "@/contexts/modalContext";
 
@@ -34,6 +35,7 @@ const Navbar = () => {
         Cookies.remove("id");
         Cookies.remove("username");
         setIsLoggedIn(false);
+        toast.success("Log out success");
         router.push(`/`);
     };
 
@@ -110,6 +112,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body className={nunito.className}>
+                <Toaster position="top-center" />
                 <ModalProvider>
                     <Navbar />
                     <div className="mt-16">{children}</div>

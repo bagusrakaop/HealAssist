@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import Card from "@/components/CardContainer";
 import Image from "next/image";
 import AddFavoritesModal from "@/components/favorites/addFavoritesModal";
@@ -7,6 +8,13 @@ import AddFavoritesModal from "@/components/favorites/addFavoritesModal";
 export default function Favorites() {
   const [isFoodModalOpen, setIsFoodModalOpen] = useState(false);
   const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+        router.replace("/");
+    }
+}, []);
 
   return (
     <main className="w-full bg-neutral min-h-screen">

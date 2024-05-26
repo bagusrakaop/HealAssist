@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
 import { getUserProfile, editUserProfile } from "@/services/profile.services";
 import { sendResetPassword } from "@/services/auth.services";
 
@@ -45,9 +46,11 @@ export default function Profile() {
         try {
             const res = await editUserProfile(body);
             if (res && res.message) {
+                toast.success("Name changed");
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 
@@ -59,10 +62,13 @@ export default function Profile() {
             const res = await sendResetPassword(formData);
             if (res && res.message) {
                 console.log(res.message);
-                // Assuming onClose is passed as a prop
+                toast.success(
+                    "Reset password email is send. Please check your email"
+                );
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 
