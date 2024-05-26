@@ -1,4 +1,4 @@
-const { User, Health } = require("../models");
+const { User, Health, Schedule } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -56,6 +56,49 @@ exports.register = (req, res) => {
 
                     User.create(user)
                         .then((data) => {
+                            const curDate = new Date();
+
+                            const times = ["08:00:00", "12:00:00", "18:00:00"];
+                            let count = 0;
+                            while (count < 7) {
+                                let schedDate = new Date();
+                                schedDate.setDate(
+                                    curDate.getDate() + 1 + count
+                                );
+                                schedDate.setHours(0); // set hours to 0
+                                schedDate.setMinutes(0); // set minutes to 0
+                                schedDate.setSeconds(0); // set seconds to 0
+                                for (const time of times) {
+                                    const schedule = {
+                                        userId: data.id,
+                                        date: schedDate,
+                                        time: time,
+                                        status: 0,
+                                    };
+
+                                    Schedule.findOne({
+                                        where: {
+                                            userId: schedule.userId,
+                                            date: schedule.date,
+                                            time: schedule.time,
+                                        },
+                                    })
+                                        .then((existingSched) => {
+                                            if (!existingSched) {
+                                                Schedule.create(schedule);
+                                            }
+                                        })
+                                        .catch((err) => {
+                                            res.status(500).send({
+                                                message:
+                                                    err.message ||
+                                                    "Some error occurred while checking Schedule data.",
+                                            });
+                                        });
+                                }
+                                count++;
+                            }
+
                             res.send({
                                 message: "User created successfully",
                                 data: {

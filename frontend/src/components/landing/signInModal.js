@@ -2,9 +2,12 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { useModal } from "@/contexts/modalContext";
 import { handleUserLogin } from "@/services/auth.services";
 import ForgotPasswordModal from "./forgotPasswordModal";
+
+// import Toast from "../toast";
 
 const SignInModal = ({ onClose }) => {
     const { openSignUpModal } = useModal();
@@ -16,6 +19,8 @@ const SignInModal = ({ onClose }) => {
         email: "",
         password: "",
     });
+
+    // const [toast, setToast] = useState({ message: "", type: "", id: null });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,16 +34,24 @@ const SignInModal = ({ onClose }) => {
         e.preventDefault();
 
         try {
+            // setToast({ message: "Loading...", type: "info", id: Date.now() });
             const res = await handleUserLogin(formData);
             if (res && res.data.token) {
                 Cookies.set("token", res.data.token);
                 Cookies.set("id", res.data.id);
                 Cookies.set("username", res.data.username);
+                toast.success("Login Success");
                 onClose();
                 router.push("/home");
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
+            // setToast({
+            //     message: "Login failed. Please try again.",
+            //     type: "error",
+            //     id: Date.now(),
+            // });
         }
     };
 
@@ -52,8 +65,22 @@ const SignInModal = ({ onClose }) => {
         }
     };
 
+    // const handleToastDismiss = (id) => {
+    //     if (toast.id === id) {
+    //         setToast({ message: "", type: "", id: null });
+    //     }
+    // };
+
     return (
         <>
+            {/* {toast.message && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    id={toast.id}
+                    onDismiss={handleToastDismiss}
+                />
+            )} */}
             <dialog
                 open={isVisible}
                 className="modal modal-enter modal-enter-active"

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
 import { handleResetPassword } from "@/services/auth.services";
 
 export default function ResetPassword() {
@@ -33,11 +34,12 @@ export default function ResetPassword() {
             console.log(formData);
             const res = await handleResetPassword(formData);
             if (res && res.message) {
-                console.log(res.message);
+                toast.success("Password reset successfully. Please login");
                 router.push("/");
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 

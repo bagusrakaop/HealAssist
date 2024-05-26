@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { sendResetPassword } from "@/services/auth.services";
 
 const ForgotPasswordModal = forwardRef((props, ref) => {
@@ -26,10 +27,13 @@ const ForgotPasswordModal = forwardRef((props, ref) => {
             const res = await sendResetPassword(formData);
             if (res && res.message) {
                 console.log(res.message);
-                // Assuming onClose is passed as a prop
+                toast.success(
+                    "Reset password email is send. Please check your email"
+                );
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 

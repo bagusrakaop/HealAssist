@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 import { useModal } from "@/contexts/modalContext";
 import { sendOTP, handleUserRegister } from "@/services/auth.services";
@@ -40,9 +41,11 @@ const SignUpModal = ({ onClose }) => {
             const res = await sendOTP(emailOTP);
             if (res && res.data) {
                 Cookies.set("hash", res.data);
+                toast.success("OTP is send");
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 
@@ -64,12 +67,14 @@ const SignUpModal = ({ onClose }) => {
             const res = await handleUserRegister(sendData);
             if (res && res.data) {
                 Cookies.remove("hash");
+                toast.success("Register success. Please login");
                 onClose();
-                router.push("/home");
-                const response = await createSchedule(res.data.id);
+                router.push("/");
+                openSignInModal();
             }
         } catch (error) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 
