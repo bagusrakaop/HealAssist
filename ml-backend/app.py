@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from catboost import CatBoostClassifier
 import pandas as pd
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:3000"])
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -36,9 +38,10 @@ def predict():
     
     # Make a prediction
     preds = model.predict(X)
+    preds_proba = model.predict_proba(X)
     
     # Response variable
-    res = {"CVD Prediction": int(preds[0])}
+    res = {"CVD Prediction": int(preds[0]), "Probability": preds_proba[0][preds][0]}
 
     return jsonify(res)
 

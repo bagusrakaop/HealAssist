@@ -1,4 +1,5 @@
 catboost
 flask
+flask-cors
 pandas
 gunicorn
