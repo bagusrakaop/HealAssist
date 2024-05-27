@@ -76,3 +76,39 @@ export const getUserFoods = async () => {
             });
     });
 };
+
+export const handleSaveFoods = async (body) => {
+    let token = Cookies.get("token");
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${BASE_URL}/foods/user`, body, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                resolve(response?.data);
+            })
+            .catch((err) => {
+                reject(err.response?.data);
+            });
+    });
+};
+
+export const handleSaveExercises = async (body) => {
+    let token = Cookies.get("token");
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${BASE_URL}/exercises/user`, body, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                resolve(response?.data);
+            })
+            .catch((err) => {
+                reject(err.response?.data);
+            });
+    });
+};
