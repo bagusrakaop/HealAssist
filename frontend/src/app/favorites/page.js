@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Card from "@/components/CardContainer";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 import AddFavoritesModal from "@/components/favorites/addFavoritesModal";
 import {
     getAllFoods,
     getAllExercises,
     getUserFoods,
     getUserExercises,
+    handleSaveExercises,
+    handleSaveFoods,
 } from "@/services/favorites.services";
 
 export default function Favorites() {
@@ -18,6 +21,8 @@ export default function Favorites() {
     const [allExercises, setAllExercises] = useState([]);
     const [userFoods, setUserFoods] = useState([]);
     const [userExercises, setUserExercises] = useState([]);
+    const [selectedFoods, setSelectedFoods] = useState([]);
+    const [selectedExercises, setSelectedExercises] = useState([]);
 
     useEffect(() => {
         const token = Cookies.get("token");
@@ -57,6 +62,68 @@ export default function Favorites() {
                 });
         }
     }, []);
+
+    const handleFoodSelect = (id) => {
+        const food = allFoods.find((food) => food.id === id);
+        if (selectedFoods.includes(food)) {
+            setSelectedFoods(selectedFoods.filter((food) => food.id !== id));
+        } else {
+            setSelectedFoods([...selectedFoods, food]);
+        }
+    };
+
+    const handleExerciseSelect = (id) => {
+        const exercise = allExercises.find((exercise) => exercise.id === id);
+        if (selectedExercises.includes(exercise)) {
+            setSelectedExercises(
+                selectedExercises.filter((exercise) => exercise.id !== id)
+            );
+        } else {
+            setSelectedExercises([...selectedExercises, exercise]);
+        }
+    };
+
+    const handleChosenFoods = async () => {
+        const selectedFoodIds = selectedFoods.map((food) => food.id);
+        const data = {
+            userId: Cookies.get("id"),
+            foodIds: selectedFoodIds,
+        };
+
+        try {
+            const res = await handleSaveFoods(data);
+            if (res && res.message) {
+                toast.success("Foods saved successfully");
+                setIsFoodModalOpen(false);
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message);
+        }
+    };
+
+    const handleChosenExercises = async () => {
+        const selectedExerciseIds = selectedExercises.map(
+            (exercise) => exercise.id
+        );
+        const data = {
+            userId: Cookies.get("id"),
+            exIds: selectedExerciseIds,
+        };
+
+        try {
+            const res = await handleSaveExercises(data);
+            if (res && res.message) {
+                toast.success("Exercises saved successfully");
+                setIsExerciseModalOpen(false);
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message);
+        }
+    };
 
     return (
         <main className="w-full bg-neutral min-h-screen">
@@ -153,7 +220,8 @@ export default function Favorites() {
                                 key={food.id}
                                 image={food.picture}
                                 captions={food.name}
-                                filled={false}
+                                filled={selectedFoods.includes(food)}
+                                onSelect={() => handleFoodSelect(food.id)}
                             />
                         ))}
                     </div>
@@ -164,12 +232,16 @@ export default function Favorites() {
                         >
                             Cancel
                         </button>
-                        <button className="btn btn-sm btn-success my-1 text-white">
+                        <button
+                            className="btn btn-sm btn-success my-1 text-white"
+                            onClick={handleChosenFoods}
+                        >
                             Done
                         </button>
                     </div>
                 </AddFavoritesModal>
             )}
+
             {/* Modal Add Favorite Exercise */}
             {isExerciseModalOpen && (
                 <AddFavoritesModal
@@ -182,7 +254,10 @@ export default function Favorites() {
                                 key={exercise.id}
                                 image={exercise.picture}
                                 captions={exercise.name}
-                                filled={false}
+                                filled={selectedExercises.includes(exercise)}
+                                onSelect={() =>
+                                    handleExerciseSelect(exercise.id)
+                                }
                             />
                         ))}
                     </div>
@@ -193,7 +268,10 @@ export default function Favorites() {
                         >
                             Cancel
                         </button>
-                        <button className="btn btn-sm btn-success my-1 text-white">
+                        <button
+                            className="btn btn-sm btn-success my-1 text-white"
+                            onClick={handleChosenExercises}
+                        >
                             Done
                         </button>
                     </div>
