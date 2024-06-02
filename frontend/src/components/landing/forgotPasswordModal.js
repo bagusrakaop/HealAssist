@@ -64,7 +64,7 @@ const ForgotPasswordModal = forwardRef((props, ref) => {
                                 Forgot Password
                             </p>
                             <p className="text-xs">
-                                Enter your registered email below and we'll send
+                                Enter your registered email below and we&rsquo;ll send
                                 <br />a link to reset your password.
                             </p>
                             <div className="pt-4">
@@ -96,5 +96,7 @@ const ForgotPasswordModal = forwardRef((props, ref) => {
         </>
     );
 });
+
+ForgotPasswordModal.displayName = 'ForgotPasswordModal';
 
 export default ForgotPasswordModal;

@@ -19,13 +19,14 @@ export default function Card({ image, captions, filled, onSelect }) {
                 width={160}
                 height={110}
                 className="rounded-t-lg"
+                alt="food or exercise"
             />
             <div className="pt-2 px-2 text-black font-bold text-sm">
                 {captions}
             </div>
             <div className="flex justify-end pb-2 px-2">
                 <button onClick={toggleFilled}>
-                    <Image src={starImage} width={20} height={20} />
+                    <Image src={starImage} width={20} height={20} alt="star"/>
                 </button>
             </div>
         </div>

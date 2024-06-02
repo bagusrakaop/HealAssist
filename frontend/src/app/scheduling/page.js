@@ -22,7 +22,7 @@ export default function SchedulingPage() {
         if (!token) {
             router.replace("/");
         }
-    }, []);
+    }, [router]);
 
     useEffect(() => {
         getUserSchedule()

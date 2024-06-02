@@ -18,7 +18,7 @@ export default function Profile() {
         if (!token) {
             router.replace("/");
         }
-    }, []);
+    }, [router]);
 
     useEffect(() => {
         getUserProfile()

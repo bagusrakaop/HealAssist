@@ -37,7 +37,7 @@ export default function Homepage() {
                     console.error("Error fetching favorite exercises:", error);
                 });
         }
-    }, []);
+    }, [router]);
 
     useEffect(() => {
         const usernameCookie = Cookies.get("username");
@@ -82,7 +82,7 @@ export default function Homepage() {
                         <div className="flex flex-row justify-center items-center">
                             <div className="text-2xl font-medium pt-5">
                                 {health.prediction === 1
-                                    ? "You have a risk of cardiovascular disease, let's fix your daily habit with us!"
+                                    ? "You have a risk of cardiovascular disease, let&rsquo;s fix your daily habit with us!"
                                     : "You do not have a risk of cardiovascular disease, keep it up!"}
                             </div>
                             {/* <Pie
@@ -117,7 +117,7 @@ export default function Homepage() {
                     </button>
                 </div>
                 <div className="text-2xl text-center font-bold mt-16">
-                    Today's Upcoming Activity
+                    Today&rsquo;s Upcoming Activity
                 </div>
                 <ActivityContainer />
                 <div className="text-2xl text-center font-bold mt-16">

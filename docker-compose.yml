@@ -1,0 +1,23 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - ml-backend
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "9090:9090"
+    restart: always
+
+  ml-backend:
+    build:
+      context: ./ml-backend
+    ports:
+      - "5000:5000"
+    restart: always

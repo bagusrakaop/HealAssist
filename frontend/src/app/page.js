@@ -223,7 +223,7 @@ export default function Home() {
         {/* Automatic Scheduling & Health Adjustment */}
         <div className="flex w-3/4 relative my-10">
           <div className="relative z-10">
-            <div className="font-extrabold text-4xl">Don't miss your routine!</div>
+            <div className="font-extrabold text-4xl">Don&rsquo;t miss your routine!</div>
             <div className="font-bold text-md w-1/2">Keep up your healthy habits with the automatic scheduling feature.</div>
             <div className="text-midgreen my-10">
               <Image className="my-2" src="/illustration-update-health.svg" alt="Update" width={280} height={280} priority />
